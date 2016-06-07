@@ -5,16 +5,16 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
-                <div class="panel-body">
+                <div class="panel-heading">Registrarse</div>
+                <div class="panel-body">                    
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Name</label>
+                            <label class="col-md-4 control-label">Nombre</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="name" value="{{ old('name') }}">
+                                <input type="text" class="form-control" name="name"  value="{{ old('name') }}">
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -24,8 +24,67 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('apellido') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Apellido</label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="apellido" value="{{ old('apellido') }}">
+                                
+
+                                @if ($errors->has('apellido'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('apellido') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                            
+                        <div class="form-group{{ $errors->has('fechaNacimiento') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Fecha de Nacimiento <em>(dd/mm/aaaa)</em></label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="fechaNacimiento" id="#datepicker"  value="{{ old('fechaNacimiento') }}">                               
+                                
+                                
+                                @if ($errors->has('fechaNacimiento'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('fechaNacimiento') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('provicia') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Provincia</label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="provincia"   value="{{ old('provincia') }}">
+
+                                @if ($errors->has('provincia'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('provicia') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('telefono') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Teléfono(opcional)</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="telefono"  value="{{ old('telefono') }}">
+
+                                @if ($errors->has('telefono'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('telefono') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+
+
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
+                            <label class="col-md-4 control-label">E-Mail</label>
 
                             <div class="col-md-6">
                                 <input type="email" class="form-control" name="email" value="{{ old('email') }}">
@@ -39,7 +98,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Password</label>
+                            <label class="col-md-4 control-label">Clave</label>
 
                             <div class="col-md-6">
                                 <input type="password" class="form-control" name="password">
@@ -53,7 +112,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Confirm Password</label>
+                            <label class="col-md-4 control-label">Confirmación de Clave</label>
 
                             <div class="col-md-6">
                                 <input type="password" class="form-control" name="password_confirmation">
@@ -69,7 +128,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-user"></i>Register
+                                    <i class="fa fa-btn fa-user"></i>Registrarme
                                 </button>
                             </div>
                         </div>
@@ -79,4 +138,33 @@
         </div>
     </div>
 </div>
+@endsection
+@section('scripts')
+    
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("input[name='hasta']").focus();
+        });
+    </script>
+
+    <script>
+        $(function() {
+            /*$( "#datepicker" ).datepicker({dateFormat: 'd-m-Y'}).val();*/
+            $( "#datepicker" ).alert(hola); 
+        });
+    </script>
+
+    <!--INICIALIZACIÓN DE TIMEPICKER DESDE Y HASTA (SON DE LA MISMA CLASE)-->
+    <script>
+        $(function() {
+            $('.desdeHasta').timepicker({'timeFormat': 'H:i', 'step': 10, 'showDuration': true, 'scrollDefault': 'now'});
+        });
+    </script>
+
+    <!--INICIALIZACIÓN DE TIMEPICKER DESDE Y HASTA (SON DE LA MISMA CLASE)-->
+    <script>
+        $(function() {
+            $('.debeRecupera').timepicker({'timeFormat': 'H:i', 'step': 10, 'scrollDefault': '00:00', 'minTime': '0:00am', 'maxTime': '08:00am',});
+        });
+    </script>     
 @endsection

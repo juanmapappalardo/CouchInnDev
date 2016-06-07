@@ -8,7 +8,10 @@
 			<h1>Tipos de Hospedaje</h1>
 		</div>
 		<br />
-		
+			@include('pages.partials.errors')                                         
+            @include('pages.partials.mensajes') 
+
+
 	    <div class= "pull-left" >
 	    	{!! Form::open([
 	        'method' => 'GET',

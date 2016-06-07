@@ -10,6 +10,9 @@ use App\Http\Requests;
 
 use Session; 
 
+use App\Hospedaje;
+Use DB;     
+
 class TiposDeHospedajeController extends Controller
 {
     /**
@@ -103,7 +106,8 @@ class TiposDeHospedajeController extends Controller
 
         Session::flash('flash_message', 'Tipo de Hospedaje Actualizado!');
 
-        return redirect()->back();    }
+        return redirect()->back();    
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -113,12 +117,19 @@ class TiposDeHospedajeController extends Controller
      */
     public function destroy($id)
     {
-        
-        $tipo = TiposDeHospedaje::findOrFail($id);
+        $propiedad = DB::table('Propiedad')
+        ->select('idPropiedad')
+        ->where('idTipoHospedaje', '=' , $id)
+        ->get(); 
 
-        $tipo->delete();
-
-        Session::flash('flash_message', 'Tipo de hospedaje eliminado correctamente!');
+        if(!$propiedad){
+            $tipo = TiposDeHospedaje::findOrFail($id);
+            $tipo->delete();
+            Session::flash('alert-success', 'Tipo de hospedaje eliminado correctamente!');
+        }
+        else{
+            Session::flash('alert-danger', 'Existen Propiedades con este tipo. Este Tipo de Hospedaje no se puede eliminar!');
+        }
 
         return redirect()->back();
         

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Session; 
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+
+
 
 class AuthController extends Controller
 {
@@ -49,9 +52,12 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name' => 'required|regex:/[A-Za-z\s]/|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'fechaNacimiento' => 'required|date_format:d/m/Y|digits_between:10,10',
+            'provincia' => 'required|regex:/[A-Za-z\s]/|max:255',
+            'telefono' => 'required|numeric|digits_between:10,12'
         ]);
     }
 
@@ -63,10 +69,18 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $result = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            
+            'apellido' => $data['apellido'], 
+            'fechaNacimiento' => \Carbon\Carbon::$data['fechaNacimiento'], 
+            'provincia' => $data['provincia'], 
+            'telefono' => $data['telefono']            
         ]);
+        Session::flash('alert-info', 'Usuario registrado con éxito!!');
+        return $result;
     }
+ 
 }

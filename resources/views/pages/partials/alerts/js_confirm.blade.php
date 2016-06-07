@@ -1,7 +1,7 @@
 <script>
 
-        function ConfirmDelete(){
-            var x = confirm("Esta seguro de eliminar este elemento?");
+        function ConfirmAccion(){
+            var x = confirm("Esta seguro de realizar esta acción?");
         if (x)
             return true;
         else
