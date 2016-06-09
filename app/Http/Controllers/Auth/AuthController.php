@@ -55,7 +55,7 @@ class AuthController extends Controller
             'name' => 'required|regex:/[A-Za-z\s]/|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'fechaNacimiento' => 'required|date_format:d/m/Y|digits_between:10,10',
+            'fechaNacimiento' => 'required|date_format:d/m/Y',
             'provincia' => 'required|regex:/[A-Za-z\s]/|max:255',
             'telefono' => 'required|numeric|digits_between:10,12'
         ]);
@@ -75,7 +75,8 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
             
             'apellido' => $data['apellido'], 
-            'fechaNacimiento' => \Carbon\Carbon::$data['fechaNacimiento'], 
+            $fn = \Carbon\Carbon::createFromFormat('d/m/Y',$data['fechaNacimiento'])->format('Y-m-d'), 
+            'fechaNacimiento' => $fn, 
             'provincia' => $data['provincia'], 
             'telefono' => $data['telefono']            
         ]);

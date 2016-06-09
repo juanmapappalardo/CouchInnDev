@@ -37,13 +37,12 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
-                            
+                        </div>                                               
                         <div class="form-group{{ $errors->has('fechaNacimiento') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Fecha de Nacimiento <em>(dd/mm/aaaa)</em></label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="fechaNacimiento" id="#datepicker"  value="{{ old('fechaNacimiento') }}">                               
+                                <input type="text" class="form-control datepicker" name="fechaNacimiento" value="{{ old('fechaNacimiento') }}">                               
                                 
                                 
                                 @if ($errors->has('fechaNacimiento'))
@@ -139,32 +138,4 @@
     </div>
 </div>
 @endsection
-@section('scripts')
-    
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $("input[name='hasta']").focus();
-        });
-    </script>
 
-    <script>
-        $(function() {
-            /*$( "#datepicker" ).datepicker({dateFormat: 'd-m-Y'}).val();*/
-            $( "#datepicker" ).alert(hola); 
-        });
-    </script>
-
-    <!--INICIALIZACIÓN DE TIMEPICKER DESDE Y HASTA (SON DE LA MISMA CLASE)-->
-    <script>
-        $(function() {
-            $('.desdeHasta').timepicker({'timeFormat': 'H:i', 'step': 10, 'showDuration': true, 'scrollDefault': 'now'});
-        });
-    </script>
-
-    <!--INICIALIZACIÓN DE TIMEPICKER DESDE Y HASTA (SON DE LA MISMA CLASE)-->
-    <script>
-        $(function() {
-            $('.debeRecupera').timepicker({'timeFormat': 'H:i', 'step': 10, 'scrollDefault': '00:00', 'minTime': '0:00am', 'maxTime': '08:00am',});
-        });
-    </script>     
-@endsection

@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-
+use Illuminate\Support\Facades\Auth;
 use Session; 
 Use DB; 
 //use App\User;
+use Carbon\Carbon;
 use App\Usuario;
 
 class UsuarioController extends Controller
@@ -65,6 +66,7 @@ class UsuarioController extends Controller
     public function edit($id)
     {
         $usuario = Usuario::findOrFail($id);
+
         return view('auth.Perfil.verPerfil')->withUsuario($usuario);
     }
 
@@ -86,8 +88,14 @@ class UsuarioController extends Controller
             'provincia' => 'required|regex:/[A-Za-z\s]/|max:255',
             'telefono' => 'required|numeric|digits_between:10,12'        
         ]);
+        /*        $desde = Carbon::createFromFormat('H:i', $request->input('desde'));
+        $input['desde'] = $desde;
+*/
         $input = $request->all();
-         
+        $fechaN = Carbon::createFromFormat('d/m/Y', $request->input('fechaNacimiento'))->format('Y-m-d'); 
+
+        $input['fechaNacimiento'] = $fechaN; 
+
         $usuario->fill($input)->save();
  
         Session::flash('flash_message', 'Perfil actualizado con exito!');
@@ -130,7 +138,19 @@ class UsuarioController extends Controller
     public function validarDonacion(Request $request)
     {
         if(($request->tipoTarj == 'VISA') and ($request->nroTarjeta == '1111') and ($request->codSeg == '222') and ($request->fechVenc == '01/17')/* and ($request->nomTitular == 'Batman')*/){
-            Session::flash('alert-success', 'Donación realizada con éxito. Usted ya puede disfrutar de los beneficios de ser Usuario Premium'); 
+            $id = Auth::user()->id; 
+            $result = DB::table('users')
+            ->where('id',$id)
+            ->update(['premium' => 1]); 
+            if($result){
+                Session::flash('alert-success', 'Donación realizada con éxito. Usted ya puede disfrutar de los beneficios de ser Usuario Premium'); 
+            }
+            else{
+                Session::flash('alert-danger', 'Algo salio mal en la actualización!');    
+            }
+            
+
+
         }
         else {
             Session::flash('alert-danger', 'Datos invalidos o fondos insuficientes!');

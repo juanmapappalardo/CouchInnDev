@@ -52,14 +52,17 @@
 	                 	<div class="form-group">
 		                	<label><h4>Capacidad: </h4></label> <label><h5><em>{{ $hospedaje->capacidad }}</em></h5></label>		                	
 	                 	</div>
-	                 	<p class="large">	
+	                 	<p class="large"></p>	
 		                	<div class="form-group">
 			                	<label><h4>Descripcion:</h4> </label>
 		                 	</div>
 		                 	<div class="form-group">
 		                 	 	<h5>{{ $hospedaje->descripHosp }}</h5></p>		                	
 		                 	</div>
-		                </p>
+		                <p class="large"></p>
+		                <div class="pull-right">
+		                	<a href="{{ route('Hospedaje.index') }}" class="btn btn-success btn-sm"></i>Volver</a>			
+		                </div>
 	                @endforeach
 
 				</div>

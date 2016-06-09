@@ -49,12 +49,22 @@ class TiposDeHospedajeController extends Controller
         //dd($request->all());
         $this->validate($request, [
             'descripcion' => 'required'
+
         ]);
 
-        $input = $request->all();
-        TiposDeHospedaje::create($input);
+        $th = DB::table('TiposDeHospedaje')
+        ->select('id')
+        ->where('descripcion', '=' , $request->descripcion)
+        ->get(); 
 
-        Session::flash('flash_message', 'Tipo de Hospedaje agregado con éxito!');
+        if(!$th){
+            $input = $request->all();
+            TiposDeHospedaje::create($input);
+            Session::flash('alert-success', 'Tipo de Hospedaje agregado con éxito!');
+        }
+        else {
+            Session::flash('alert-danger', 'Tipo de Hospedaje no creado!. Ya exíste un tipo de hospedaje con esa descripción');
+        }
         
         return redirect()->back();
     }

@@ -36,7 +36,7 @@
                             </button>
                           			
 						
-						<a href="{{ route('TiposDeHospedaje.index') }}" class="btn btn-danger btn-sm"></i>Cancelar</a>			
+						<a href="{{ route('TiposDeHospedaje.index') }}" class="btn btn-success btn-sm"></i>Volver</a>			
 						{!! Form::close() !!}
 					</div>
 				</div>

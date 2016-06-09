@@ -19,7 +19,7 @@
 	       	'class' => 'navbar-form navbar-left pull-left' 
 	        ]) !!}
 
-	        {!! Form::submit('Nuevo Tipo', ['class' => 'btn btn-primary btn-sm']) !!}
+	        {!! Form::submit('Nuevo Tipo', ['class' => 'btn btn-success btn-sm']) !!}
 	        {!! Form::close() !!}           
 	    </div> 
 

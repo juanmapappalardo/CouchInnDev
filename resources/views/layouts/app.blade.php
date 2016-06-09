@@ -38,60 +38,23 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<!--
+
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">    
 
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
--->
+
     
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
 
 
     <!-- Styles -->
-    <script type="text/javascript">
-
-        function justNumbers(e)
-        {
-            var keynum = window.event ? window.event.keyCode : e.which;
-            if ((keynum == 8) || (keynum == 46))
-                return true;
-            return /\d/.test(String.fromCharCode(keynum));
-        }
-
-        function validar(e) { // 1
-            tecla = (document.all) ? e.keyCode : e.which; // 2
-            if (tecla==8) return true; // 3
-            patron =/[A-Za-z\s]/; // 4
-            te = String.fromCharCode(tecla); // 5
-
-            return patron.test(te); // 6
-        }
-    </script>
+ 
 
     <style>
-    /*
-        .carousel-indicators li {
-            display: inline-block;
-            width: 48px;
-            height: 48px;
-            margin: 10px;
-            text-indent: 0;
-            cursor: pointer;
-            border: none;
-            border-radius: 50%;
-            background-color: #0000ff;
-            box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.5);    
-        }
-        .carousel-indicators .active {
-            width: 48px;
-            height: 48px;
-            margin: 10px;
-            background-color: #ffff99;
-        }
-    */
+    
 
         textarea.style:focus, input.style:focus, input.style[type]:focus, .uneditable-input:focus {   
             0, 255, 0, 0.3
@@ -207,31 +170,37 @@
     </nav>
 
     @yield('content')
-
-    <!-- JavaScripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
-
-    <!--IMPORTACIÓN DE COMPONENTES TIMEPICKER-->
-    <script src="https://www.google-analytics.com/analytics.js" async=""></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
-    <script src="{{ asset('jquery-timepicker/lib/site.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('jquery-timepicker/lib/site.css') }}">
-
-    <script src="{{ asset('jquery-timepicker/lib/bootstrap-datepicker.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('jquery-timepicker/lib/bootstrap-datepicker.css') }}">
-
-    <script src="{{ asset('jquery-timepicker/jquery.timepicker.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('jquery-timepicker/jquery.timepicker.css') }}">
+    <!--<link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">-->
+    <!-- Latest compiled and minified CSS -->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">-->
+    <!-- Optional theme -->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">-->
+    <!-- Latest compiled and minified JavaScript -->
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>-->
+    <!-- Jquery -->
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <!-- Datepicker Files -->
+    <link rel="stylesheet" href="{{asset('datePicker/css/bootstrap-datepicker3.css')}}">
+    <link rel="stylesheet" href="{{asset('datePicker/css/bootstrap-standalone.css')}}">
+    <script src="{{asset('datePicker/js/bootstrap-datepicker.js')}}"></script>
+    <!-- Languaje -->
+    <script src="{{asset('datePicker/locales/bootstrap-datepicker.es.min.js')}}"></script>
     <!--FIN IMPORTACIÓN DE COMPONENTES TIMEPICKER-->
     <!--IMPORTACIÓN DE COMPONENTES COLORPICKER-->
     <script src="{{ asset('bp-colorpicker/dist/js/bootstrap-colorpicker.js') }}"></script>    
     <link rel="stylesheet" href="{{ asset('bp-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}">
     <!--FIN IMPORTACIÓN DE COMPONENTES COLORPICKER-->
+
+
     @yield('scripts')
 
+    <script>
+        $('.datepicker').datepicker({
+            format: "dd/mm/yyyy",
+            language: "es",
+            autoclose: true
+        });
+    </script>
 
 </body>
 </html>
