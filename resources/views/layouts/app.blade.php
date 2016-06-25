@@ -54,7 +54,6 @@
  
 
     <style>
-    
 
         textarea.style:focus, input.style:focus, input.style[type]:focus, .uneditable-input:focus {   
             0, 255, 0, 0.3
@@ -70,11 +69,13 @@
 
         }
         textarea.fija{
-            width: 200px; 
-            min-width:200px; 
-            max-width:200px; 
+            width: 330px; 
+            min-width:330px; 
+            max-width:330px; 
 
-            height:200px; 
+            height:350px; 
+            min-height:350px; 
+            max-height:350px; 
         }
 
         p.large {
@@ -110,6 +111,34 @@
             margin: auto;
             background-color:#000;
         }
+        .inputFecha{
+            width:100px;
+        }
+        .calle{
+            width:200px;
+        }
+        hr.conBorde{            
+            border-top: 1px solid; 
+            border-bottom: 1px solid ; 
+            border-left:none; 
+            border-right:none; 
+            height: 2px; 
+        }
+       hr.style-five { 
+            border: 0; 
+            height: 1px; 
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));        
+            position: sticky;
+        }
+        div.estatico{
+            position:absolute;
+        }
+        .styled-select {
+            height: 29px;
+            overflow: hidden;
+            width: 240px;
+        }
+
     </style>
 
 </head>
@@ -142,11 +171,53 @@
                         <li><a href="{{ url('/login') }}">Login</a></li>
                         <li><a href="{{ url('/register') }}">Registrarse</a></li>
                     @else
-                        <li><a href="{{ route('Hospedaje.index') }}">Hospedajes</a></li>
+                    <!--
+                    <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                {{ Auth::user()->name }} <span class="caret"></span>
+                            </a>
 
-                        @if(Auth::user()->administrador > 0)
-                            <li><a href="{{ route('TiposDeHospedaje.index')}}">Tipos de Hospedaje</a></li>
-                        @endif
+                            <ul class="dropdown-menu" role="menu">
+
+                                <li>
+                                    <a href="{{ route('Usuario.edit', Auth::user()->id) }}">
+                                        <span class="glyphicon glyphicon-user"></span>Ver Perfil
+                                    </a>
+                                </li>                                
+                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Cerrar Sesión</a></li>
+
+                            </ul>
+                        </li>
+                    -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                Hospedajes<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="{{ route('Hospedaje.index') }}">Ver Hospedajes</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('Hospedaje.create') }}">Publicar Hospedaje</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('Reservas.index') }}">Ver mis Reservas</a>
+                                </li>
+                                  <li>
+                                    <a href="{{ url('hospedajes/misHospedajes') }}">Mis Hospedajes</a>
+                                </li>
+                                @if(Auth::user()->administrador > 0)
+                                    <li>
+                                        <a href="{{ route('TiposDeHospedaje.index')}}">Tipos de Hospedaje</a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </li>                        
+
+                        <!--<li><a href="{{ route('Propiedad.index') }}">Mis Propiedades</a></li>-->
+
+                        <!--<li><a href="{{ route('Hospedaje.create') }}">Alta Hospedaje</a></l>-->
+
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>

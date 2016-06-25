@@ -8,6 +8,11 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
+
+Use DB; 
+Use App\Funciones; 
+
 
 
 
@@ -40,8 +45,11 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+        
+
+        $this->middleware($this->guestMiddleware(), ['except' => 'logout']); 
     }
+
 
     /**
      * Get a validator for an incoming registration request.
@@ -69,19 +77,56 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        $result = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            
-            'apellido' => $data['apellido'], 
-            $fn = \Carbon\Carbon::createFromFormat('d/m/Y',$data['fechaNacimiento'])->format('Y-m-d'), 
-            'fechaNacimiento' => $fn, 
-            'provincia' => $data['provincia'], 
-            'telefono' => $data['telefono']            
-        ]);
-        Session::flash('alert-info', 'Usuario registrado con éxito!!');
-        return $result;
+        try{
+        
+            $result = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+                
+                'apellido' => $data['apellido'], 
+                $fn = \Carbon\Carbon::createFromFormat('d/m/Y',$data['fechaNacimiento'])->format('Y-m-d'), 
+                'fechaNacimiento' => $fn, 
+                //'provincia' => $data['provincia'], 
+                'telefono' => $data['telefono'], 
+                'administrador' => 0
+            ]);
+
+            Session::flash('alert-info', 'Usuario registrado con éxito!!');
+            return view('/home');
+        }
+        catch(Exception $e){
+            Session::flash('alert-danger', 'Algo salio mal!!'.$e);
+            return redirect()->back(); 
+
+        }
+        
+         
     }
- 
+
+    public function register(Request $data){
+           try{
+        
+            $result = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+                
+                'apellido' => $data['apellido'], 
+                $fn = \Carbon\Carbon::createFromFormat('d/m/Y',$data['fechaNacimiento'])->format('Y-m-d'), 
+                'fechaNacimiento' => $fn, 
+                //'provincia' => $data['provincia'], 
+                'telefono' => $data['telefono'], 
+                'administrador' => 0
+            ]);
+
+            Session::flash('alert-info', 'Usuario registrado con éxito!!. Por favor ingrese al sistema');
+            return view('auth.login');
+        }
+        catch(Exception $e){
+            Session::flash('alert-danger', 'Algo salio mal!!'.$e);
+            return redirect()->back(); 
+
+        }
+    }
 }

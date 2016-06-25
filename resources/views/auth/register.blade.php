@@ -53,19 +53,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('provicia') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Provincia</label>
 
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" name="provincia"   value="{{ old('provincia') }}">
-
-                                @if ($errors->has('provincia'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('provicia') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
 
                         <div class="form-group{{ $errors->has('telefono') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Teléfono(opcional)</label>

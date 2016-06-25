@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@include('pages.partials.alerts.js_confirm')  
 <div class="container">
-    @include('pages.partials.alerts.js_confirm')  
+    
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h1>Tipos de Hospedaje</h1>
@@ -52,7 +53,7 @@
 							 			{!! Form::open([
 			            				'method' => 'DELETE',
 			            				'route' => ['TiposDeHospedaje.destroy', $tipo->id],
-			            				'onsubmit' => 'return ConfirmDelete()'
+			            				'onsubmit' => 'return ConfirmAccion()'
 			        				]) !!}
 
 		                           	<button type="submit" class="btn btn-danger btn-xs">Eliminar</button>

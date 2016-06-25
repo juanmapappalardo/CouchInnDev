@@ -1,33 +1,61 @@
 @extends('layouts.app')
 
 @section('content')
+@include('pages.partials.alerts.js_confirm')  
 <div class="container">
-    @include('pages.partials.alerts.js_confirm')  
+    
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h1>Hospedajes</h1>
+			@if($idUsuario != Auth::user()->id)
+				<h2>Hospedajes</h2>
+			@else
+				<h2> Mis Hospedajes</h2>
+			@endif
 		</div>
-		<br />
-		<!--
-	    <div class= "pull-left" >
-	    	{!! Form::open([
-	        'method' => 'GET',
-	        'route' => ['TiposDeHospedaje.create'],
-	       	'class' => 'navbar-form navbar-left pull-left' 
-	        ]) !!}
+		@if($idUsuario != Auth::user()->id)
+			<div class="panel panel-default">			
+				<div class="panel-body">										 
+					{!!Form::open([
+						'method' => 'GET',
+						'url' => 'hospedaje/buscar'
+					])!!}
+					<table class="table table-striped task-table">
+						<thead>					
+							<th>
+								<label>Ciudad</label>	
+								{!! Form::select('id_ciudad',$ciudades, '-1', ['class' => 'form-control styled-select ']) !!}
+							</th>
+							<th>
+								<label>Provincia</label>	
+								{!! Form::select('id_provincia',$provincias, '-1', ['class' => 'form-control styled-select']) !!}							
+							</th>
+							<th>
+								<label>Tipo de Hospedaje</label>	
+								{!! Form::select('idTipoHosp',$tiposHosp, '-1', ['class' => 'form-control styled-select']) !!}							
+							</th>
+							<th>
+								<label>Titulo</label>
+								{!! Form::text('titulo', null, ['class' => ' form-control styled-select']) !!}
+							</th>
+							<th>	
+								<button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+								{!! Form::close() !!}					    			
+							</th>
 
-	        {!! Form::submit('Nuevo Tipo', ['class' => 'btn btn-primary btn-sm']) !!}
-	        {!! Form::close() !!}           
-	    </div> 
-		-->
+						</thead>				
+				</div>			
+			</div>
+		@endif
 
-		<div class="panel-body">
+		<div class="panel-body">		
 			@include('pages.partials.errors') 
-			@include('pages.partials.exito') 
+			@include('pages.partials.mensajes') 
 
 			
 			<table class="table table-striped task-table">
+				
 				<thead>
+					
 					<th>Titulo</th>
 					<th>Usuario</th>
 					<th>Tipo</th>
@@ -42,14 +70,56 @@
 					    	<td class="table-text"><div>{{ $hospedaje->name }}</div></td>
 					    	<td class="table-text"><div>{{ $hospedaje->descTipoHosp }}</div></td>
 					    	<td class="table-text"><div>{{ $hospedaje->capacidad }}</div></td>
-					    	<td class="table-text"><div>{{  $hospedaje->descripcion }}</div></td>
+					    	<td class="table-text"><div>{{ $hospedaje->provincia_nombre }}</div></td>
 
-				    		<td>			
-				    			<div class= "pull-right">
-					    			
-					    			<a href="{{ route('Hospedaje.show', $hospedaje->id) }}" class="btn btn-primary btn-sm">Detalle</a>
-		                            {!! Form::close() !!}                                              
-		                        <div>
+
+				    		<td>
+
+
+					    		
+			                    <div class= "pull-right">
+				    				{!! Form::open([
+		                                'method' => 'GET',
+		                                'route' => ['Hospedaje.show', $hospedaje->id], 
+		                               	'id' => 'formVer'
+		                            ]) !!}
+		                            <button type="submit" class="btn btn-success btn-xs">Detalle</button>								                            
+		                            {!! Form::close() !!}                                              									
+		                        </div>
+								@if($idUsuario == Auth::user()->id)				                  
+			                        <div class= "pull-right">
+					    				{!! Form::open([
+			                                'method' => 'GET',
+			                                'route' => ['Hospedaje.edit', $hospedaje->id]
+			                            ]) !!}
+			                            <button type="submit" class="btn btn-warning btn-xs">Editar</button>	
+			                            {!! Form::close() !!}                                              
+				                    </div>
+				                    <div class= "pull-right">					    			
+								 		{!! Form::open([
+				            				'method' => 'DELETE',
+				            				'route' => ['Hospedaje.destroy', $hospedaje->id],
+				            				'onsubmit' => 'return ConfirmAccion()'			            				
+				        				]) !!}
+				        				<button type="submit" class="btn btn-danger btn-xs">Eliminar</button>
+			                            {!! Form::close() !!}					    			
+			                        </div>
+			                        <div class= "pull-right">					    			
+									 	{!! Form::open([
+			                                'method' => 'GET',
+			                                'url' => ['hospedaje/verReservas', $hospedaje->id], 		                               	
+			                            ]) !!}
+				        				<button type="submit" class="btn btn-primary btn-xs">Ver Reservas</button>
+			                            {!! Form::close() !!}					    			
+			                        </div>
+			                    @else
+			                    	{!! Form::open([
+		                                'method' => 'GET',
+		                                'url' => ['reservas/crearId', $hospedaje->id], 		                               	
+		                            ]) !!}
+			                    	<button type="submit" class="btn btn-primary btn-xs">Reservar</button>
+			                    	{!! Form::close() !!}
+			                    @endif			        			
 						    </td>
 					    </tr>
 					@endforeach
