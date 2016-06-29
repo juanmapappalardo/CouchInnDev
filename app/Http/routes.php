@@ -23,10 +23,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('hospedaje/eliminarImagen/', 'HospedajeController@eliminarImagenHosp'); 
 	Route::get('usuario/getViewDonacion', 'UsuarioController@getViewDonacion'); 
 	Route::get('hospedaje/buscar', 'HospedajeController@buscarHospedaje'); 
-	Route::get('reservas/crearId/{id}', 'ReservasController@createId');
 	
+	Route::get('reservas/crearId/{id}', 'ReservasController@createId');
 	Route::get('reservas/confirmarReserva/{id_reserva}', 'ReservasController@confirmarReserva');
 	Route::get('reservas/cancelarReserva/{id_reserva}', 'ReservasController@cancelarReserva');
+	Route::get('reservas/couchRealizados', 'ReservasController@couchRealizados'); 
+	
 	Route::get('hospedaje/verReservas/{id}', 'ReservasController@verReservas'); 
 	Route::get('hospedajes/misHospedajes', 'HospedajeController@misHospedajes'); 
 	Route::get('/',['as' => 'home', 'uses' => 'PagesController@home']);

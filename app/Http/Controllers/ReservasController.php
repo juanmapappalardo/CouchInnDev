@@ -145,37 +145,37 @@ class ReservasController extends Controller
         Session::flash('alert-danger', 'Fechas: '.$fechaIni.'___'.$fechaFin.'___'.$fechIniHosp.'___'.$fechFinHosp);
         return redirect()->back(); 
         */
+        
 
+        if($fechaIni->lt($fechaFin)){
             
-        if (($fechaIni->gte($fechIniHosp)) && ($fechaFin->lte($fechFinHosp))){
-            if(!$this->encontroRango($fechaIni,$fechaFin, $request->input('id_hospedaje'))){
-                return true;
+            if (($fechaIni->gte($fechIniHosp)) && ($fechaFin->lte($fechFinHosp))){
+                if(!$this->encontroRango($fechaIni,$fechaFin, $request->input('id_hospedaje'))){
+                    return true;
+                }
+                else{
+                    $fechasReservadas = $this->getFechasReservas($request->input('id_hospedaje')); 
+                    $fechas =''; 
+                    foreach ($fechasReservadas as $reserva) {
+                        $fechas= $fechas."["; 
+                        $fechas = $fechas.Carbon::createFromFormat('Y-m-d', $reserva->fechaIni)->format('d/m/Y'); 
+                        $fechas = $fechas.' - '.Carbon::createFromFormat('Y-m-d', $reserva->fechaFin)->format('d/m/Y'); 
+                        $fechas = $fechas."]"; 
+                    }
+
+
+                    Session::flash('alert-danger', "Las fechas seleccionadas se encuentran dentro del rango de fechas de otra reserva Aceptada!.");
+                    Session::flash('alert-warning', "Fechas de reserva aceptadas:\r\n".$fechas);
+                    return false;  
+                } 
             }
             else{
-                $fechasReservadas = $this->getFechasReservas($request->input('id_hospedaje')); 
-                $fechas =''; 
-                foreach ($fechasReservadas as $reserva) {
-                    $fechas= $fechas."["; 
-                    $fechas = $fechas.Carbon::createFromFormat('Y-m-d', $reserva->fechaIni)->format('d/m/Y'); 
-                    $fechas = $fechas.' - '.Carbon::createFromFormat('Y-m-d', $reserva->fechaFin)->format('d/m/Y'); 
-                    $fechas = $fechas."]"; 
-                /*
-                foreach ($reservasAceptadas as $reserva) {
-                    $fechas['fechaIni'] = $reserva->fechaIni; //Carbon::createFromFormat('Y-m-d', $reserva->fechaIni)->format('d/m/Y'); 
-                    $fechas['fechaFIn'] = $reserva->fechaFin; //Carbon::createFromFormat('Y-m-d', $reserva->fechaFin)->format('d/m/Y'); 
-                }
-                */                
-                }
-
-
-                Session::flash('alert-danger', "Las fechas seleccionadas se encuentran dentro del rango de fechas de otra reserva Aceptada!.");
-                Session::flash('alert-warning', "Fechas de reserva aceptadas:\r\n".$fechas);
+                Session::flash('alert-danger', 'Las fechas deben estar dentro de la vigencia del Hospedaje!');
                 return false;  
-            } 
+            }
         }
         else{
-            Session::flash('alert-danger', 'Las fechas deben estar dentro de la vigencia del Hospedaje!');
-            return false;  
+            Session::flash('alert-danger', 'La fecha de fin seleccionada debe ser mayor o igual que la fecha de inicio.'); 
         }
     }
 
@@ -271,6 +271,17 @@ class ReservasController extends Controller
         */
 
         return $reservasAceptadas; 
-
     }
+
+    public function couchRealizados(){
+        $couchs = Reserva::getCouchRealizados(); 
+
+        return view('pages.Reservas.couchRealizados', array('couchs' => $couchs)); 
+        
+    }
+    /*
+    private function getCouchRealizados(){
+        $couch = DB::
+    }
+    */
 }
