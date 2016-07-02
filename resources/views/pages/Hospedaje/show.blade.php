@@ -124,6 +124,7 @@
 	    						</div>
     							<div id="collapse2" class="panel-collapse collapse">
 	      							<div class="panel-body">
+	      								
 				                 		@foreach($comentarios as $coment)
 				                 			<br />
 					                 		<div class="comentario"> 
@@ -135,29 +136,50 @@
 						                 		<div class="form-group">
 							                		<label><h5>{{ $coment->comentario }}</h5> </label>
 						                			@if($hospedaje->id_usuario == Auth::user()->id)
-						                				<br />				                								                	
-							                			<div class= "glyphicon glyphicon-share-alt">
-							                				Responder
-							                			</div>					                						                	
-							                		@endIf
-						                 		</div>	                 	
-						                 	</div>
+						                					<br />				                								                								                										                
+							                				<div class= "glyphicon glyphicon-share-alt"></div>
+							                				<a  data-toggle="modal" data-target="#createModal{{$coment->id}}">
+							                					Responder
+							                				</a>
+							                				<div class="modal fade" id="createModal{{$coment->id}}" role="dialog">
+                                        						<div class="modal-dialog">
+                                    								<!-- MODAL CONTENT-->
+                                            						<div class="modal-content">
+                                                						<!-- MODAL HEADER-->
+                                                							<div class="modal-header">
+                                                    							<button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                     								<h4 class="modal-title">Respuesta</h4>
+                                                							</div>
+                                                							<div class="modal-body">
+                                                							
+                                                								
+                                                							</div>
+                                                							 <div class="modal-footer">
+        																		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      																		</div>                                                							                                                					
+                                                					</div>
+                                                				</div>
+                                                			</div>
+                                                	@endIf
+                                                </div>							                			
+							                		
+						                 	</div>	                 							                 							                
 				                 		@endforeach
 				                 	</div>
 			                	</div>
 			                </div>
-			            </div>
-			            @if($hospedaje->id_usuario == Auth::user()->id)   
-			            	<br>
-			                <div class="pull-right">
-			                	<a href="{{ url('hospedajes/misHospedajes') }}" class="btn btn-success btn-sm"></i>Volver</a>			
-			                </div>
-			            @else
-	                 		<br>
-			                <div class="pull-right">
-			                	<a href="{{ route('Hospedaje.index') }}" class="btn btn-success btn-sm"></i>Volver</a>			
-			                </div>
-			            @endIf			           
+			            
+				            @if($hospedaje->id_usuario == Auth::user()->id)   
+				            	<br>
+				                <div class="pull-right">
+				                	<a href="{{ url('hospedajes/misHospedajes') }}" class="btn btn-success btn-sm"></i>Volver</a>			
+				                </div>
+				            @else
+		                 		<br>
+				                <div class="pull-right">
+				                	<a href="{{ route('Hospedaje.index') }}" class="btn btn-success btn-sm"></i>Volver</a>			
+				                </div>
+				            @endIf			           
 	                @endforeach
 				</div>
 			</div>
