@@ -45,7 +45,7 @@
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
-    
+   
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
 
@@ -76,6 +76,16 @@
             height:350px; 
             min-height:350px; 
             max-height:350px; 
+        }
+
+        textarea.coment{
+            width: 740px; 
+            min-width:740px; 
+            max-width:740px; 
+
+            height:250px; 
+            min-height:250px; 
+            max-height:250px; 
         }
 
         p.large {
@@ -139,6 +149,14 @@
             width: 240px;
         }
 
+        .comentario{
+
+            background-color: #DCDCDC ;
+            padding:0px 0px 0px 20px;
+            border-radius: 25px;
+            border: 1px solid #D3D3D3;
+        }
+
     </style>
 
 </head>
@@ -157,7 +175,7 @@
 
            
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    CouchInn
+                    <img src="imagenes/logos/ImgCounchInn.png" class="img-circle" alt="CouchInn" width="30" height="23">
                 </a>
             </div>
 
@@ -194,7 +212,7 @@
                                 Hospedajes<span class="caret"></span>
                             </a>
                              <ul class="dropdown-menu" role="menu">
-                                @if(Auth::user()->administrador > 0)
+                                
                                
                                     <li>
                                         <a href="{{ route('Hospedaje.index') }}">Ver Hospedajes</a>
@@ -208,7 +226,7 @@
                                       <li>
                                         <a href="{{ url('hospedajes/misHospedajes') }}">Mis Hospedajes</a>
                                     </li>
-                                @else
+                                @if(Auth::user()->administrador > 0)
                                     <li>
                                         <a href="{{ route('TiposDeHospedaje.index')}}">Tipos de Hospedaje</a>
                                     </li>

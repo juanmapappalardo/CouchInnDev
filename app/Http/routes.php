@@ -19,11 +19,12 @@ Route::get('usuario/enviarLink' , 'UsuarioController@enviarLinkRecuperarClave');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::post('usuario/validarDonacion' , 'UsuarioController@validarDonacion'); 
-
+	Route::post('comentario/postearComentario', 'ComentarioController@storeComentario'); 
 	Route::post('hospedaje/eliminarImagen/', 'HospedajeController@eliminarImagenHosp'); 
+
 	Route::get('usuario/getViewDonacion', 'UsuarioController@getViewDonacion'); 
 	Route::get('hospedaje/buscar', 'HospedajeController@buscarHospedaje'); 
-	
+	Route::get('hospedaje/comentarCouch/{id}', 'HospedajeController@comentarCouch'); 
 	Route::get('reservas/crearId/{id}', 'ReservasController@createId');
 	Route::get('reservas/confirmarReserva/{id_reserva}', 'ReservasController@confirmarReserva');
 	Route::get('reservas/cancelarReserva/{id_reserva}', 'ReservasController@cancelarReserva');

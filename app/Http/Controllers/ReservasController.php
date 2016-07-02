@@ -27,13 +27,21 @@ class ReservasController extends Controller
         $reservas = DB::table('reservas')
                         ->join('hospedaje', 'hospedaje.id', '=','reservas.id_hospedaje')
                         ->leftjoin('estados_reservas', 'reservas.id_estado', '=', 'estados_reservas.id_estado')
-                        ->select('hospedaje.id', 'hospedaje.titulo', 'reservas.fechaIni', 'reservas.fechaFin', 'estados_reservas.desc_estado')
+                        ->select('hospedaje.id', 'hospedaje.titulo', 'reservas.fechaIni', 'reservas.fechaFin', 'estados_reservas.desc_estado', 'reservas.id_estado', 'reservas.id_hospedaje')
                         ->where('reservas.id_usuario', Auth::user()->id)
                         ->get(); 
 
         foreach ($reservas as  $reserva) {
+            $fechaFin = Carbon::createFromFormat('Y-m-d', $reserva->fechaFin);
+            if(($fechaFin->lte(\Carbon\Carbon::now())) && ($reserva->id_estado == 3)){
+                $reserva->concretada = 1; 
+            }
+            else{
+                $reserva->concretada = 0; 
+            }
             $reserva->fechaIni = Carbon::createFromFormat('Y-m-d', $reserva->fechaIni)->format('d/m/Y'); 
             $reserva->fechaFin = Carbon::createFromFormat('Y-m-d', $reserva->fechaFin)->format('d/m/Y'); 
+
         }
 
         return view('pages.Reservas.index', array('reservas' => $reservas)); 
@@ -279,9 +287,5 @@ class ReservasController extends Controller
         return view('pages.Reservas.couchRealizados', array('couchs' => $couchs)); 
         
     }
-    /*
-    private function getCouchRealizados(){
-        $couch = DB::
-    }
-    */
+
 }

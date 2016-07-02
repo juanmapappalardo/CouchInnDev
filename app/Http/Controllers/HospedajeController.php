@@ -9,6 +9,7 @@ use App\Funciones;
 use App\Hospedaje;
 use App\Propiedad;
 use App\ImagenesHospedaje;
+use App\Comentario;
 use Session; 
 use DB; 
 use Carbon\Carbon;
@@ -97,21 +98,13 @@ class HospedajeController extends Controller
      */
     public function show($id)
     {
-        $hospedajes = DB::table('hospedaje')
-        ->join('users', 'hospedaje.idUsuarioPublic', '=', 'users.id')
-        ->leftjoin('Propiedad', 'hospedaje.idPropiedad','=', 'Propiedad.idPropiedad')
-        ->leftjoin('provincia', 'Propiedad.idProvincia', '=', 'provincia.id')
-        ->leftjoin('TiposDeHospedaje', 'Propiedad.idTipoHospedaje', '=', 'TiposDeHospedaje.id')
-        ->leftjoin('ciudad', 'Propiedad.idCiudad', '=', 'ciudad.id_ciudad')
-
-        ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp' , 'hospedaje.descripHosp','ciudad.ciudad_nombre')
-        ->where('hospedaje.id', '=', $id)
-        ->get();
-
+        
+        $hospedaje= Hospedaje::getHospedaje($id);
         $imgs = $this->getImagenesHosp($id); 
+        $comentarios = Comentario::getComentarios($id); 
         
 
-        return view('pages.Hospedaje.show', array('hospedajes' => $hospedajes, 'imagenes' =>$imgs)); 
+        return view('pages.Hospedaje.show', array('hospedajes' => $hospedaje, 'imagenes' =>$imgs, 'id_hospedaje' => $id, 'comentarios' => $comentarios)); 
     }
 
     /**
@@ -482,5 +475,12 @@ class HospedajeController extends Controller
                     'idTipoHospedaje'   => $inpPropiedad['idTipoHospedaje'], 
                     'nro'               => $inpPropiedad['nro'],
             ]);
+    }
+
+    public function comentarCouch($idHospedaje){
+        $hospedaje = Hospedaje::getHospedaje($idHospedaje);
+        $imgs = $this->getImagenesHosp($idHospedaje); 
+        $comentarios = Comentario::getComentarios($id); 
+        return view('pages.Hospedaje.show', array('hospedajes' => $hospedaje, 'imagenes' =>$imgs,'id_hospedaje' => $idHospedaje, 'comentarios' => $comentarios)); 
     }
 }

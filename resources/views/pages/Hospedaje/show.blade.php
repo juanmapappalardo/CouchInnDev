@@ -18,12 +18,12 @@
 					      <!-- Carousel items --> 
 
 					      <div class="carousel-inner">
-					      	<div class="active item">{!! Html::image(array_values($imagenes)[0]->pathFoto,'',['width' => 460, 'height' => 345,'aling' => 'middle']) !!} </div>
+					      	<div class="active item">{!! Html::image(array_values($imagenes)[0]->pathFoto,'',['class' => 'img-rounded' , 'width' => 460, 'height' => 345,'aling' => 'middle']) !!} </div>
 					 		@if(!empty(array_values($imagenes)[1]))     	
-					   			<div class="item">{!! Html::image(array_values($imagenes)[1]->pathFoto,'',['width' => 460, 'height' => 345,'aling' => 'middle']) !!}</div>
+					   			<div class="item">{!! Html::image(array_values($imagenes)[1]->pathFoto,'',['class' => 'img-rounded','width' => 460, 'height' => 345,'aling' => 'middle']) !!}</div>
 					   		@endif
 					   		@if(!empty(array_values($imagenes)[2]))     	
-					   			<div class="item">{!! Html::image(array_values($imagenes)[2]->pathFoto,'',['width' => 460, 'height' => 345,'aling' => 'middle']) !!}</div>
+					   			<div class="item">{!! Html::image(array_values($imagenes)[2]->pathFoto,'',['class' => 'img-rounded', 'width' => 460, 'height' => 345,'aling' => 'middle']) !!}</div>
 					   		@endif
 					   		<!--
 					   			HACER LO MISMO PARA LAS 3 IMAGENES!!!
@@ -70,25 +70,99 @@
 	                 	<div class="form-group">
 	                 		<hr class="style-five" />
 	                 	</div>
-		                	<div class="form-group">
-			                	<label><h4>Descripcion:</h4><h5>{{ $hospedaje->descripHosp }}</h5> </label>
-		                 	</div>
-
+	                	<div class="form-group">
+		                	<label><h4>Descripcion:</h4><h5>{{ $hospedaje->descripHosp }}</h5> </label>
+	                 	</div>	                 	
 		                <div class="form-group">
 	                 		<hr class="style-five" />
 	                 	</div>
-		                <div class="pull-right">
-		                	<a href="{{ route('Hospedaje.index') }}" class="btn btn-success btn-sm"></i>Volver</a>			
-		                </div>
-	                @endforeach
+	                 	
+	                 	<!-- DEJA TU COMENTARIO -->
+	                 	<div class="panel-group" id="accordion">
+	                 		@if($hospedaje->id_usuario <> Auth::user()->id)
+	  							<div class="panel panel-default">
+	    							<div class="panel-heading">
+	      								<h4 class="panel-title">
+	        								<a data-toggle="collapse" data-parent="#accordion" href="#collapse1"><i> Realizar comentario</i></a>
+	      								</h4>
+		    						</div>
+	    							<div id="collapse1" class="panel-collapse collapse">
+		      							<div class="panel-body">
 
+					                 		{!! Form::open(['url' => 'comentario/postearComentario', 'method' => 'POST']) !!}
+
+					                 		{{Form::hidden('id_hospedaje', $id_hospedaje)}} 
+					                 		<div class="form-group">
+						                        <div class="col-md-4 ">
+						                            {!! Form::label('comentario', 'Cometario:', ['class' => 'control-label']) !!}                                  
+						                        </div>
+						                       <br />
+						                    </div>
+						                    <div class="form-group">
+						                        <div class="col-md-4">
+						                            {!! Form::textarea('comentario', null, ['class' => 'form-control coment']) !!}                        
+						                        </div>
+						                    </div>
+										</div>
+										<div class="form-group">
+											<div style="padding-left:30px;">	
+												{!! Form::submit('Comentar', ['class' => 'btn btn-success btn-sm']) !!}	     			
+								    							    		
+											</div>
+										    {!! Form::close() !!}									
+										</div>								
+									</div>							
+								</div>
+							@endIf
+
+	                 	
+  							<div class="panel panel-default">
+    							<div class="panel-heading">
+      								<h4 class="panel-title">
+        								<a data-toggle="collapse" data-parent="#accordion" href="#collapse2"><i>Ver comentarios</i></a>
+      								</h4>
+	    						</div>
+    							<div id="collapse2" class="panel-collapse collapse">
+	      							<div class="panel-body">
+				                 		@foreach($comentarios as $coment)
+				                 			<br />
+					                 		<div class="comentario"> 
+						                 		<h4><i>{{$coment->nomUsuario}}</i></h4>
+						                 		<div class="pull-rigth">
+						                 			<h6><i>{{$coment->created_at}}</i></h6>
+						                 		</div>
+						                 		<hr>
+						                 		<div class="form-group">
+							                		<label><h5>{{ $coment->comentario }}</h5> </label>
+						                			@if($hospedaje->id_usuario == Auth::user()->id)
+						                				<br />				                								                	
+							                			<div class= "glyphicon glyphicon-share-alt">
+							                				Responder
+							                			</div>					                						                	
+							                		@endIf
+						                 		</div>	                 	
+						                 	</div>
+				                 		@endforeach
+				                 	</div>
+			                	</div>
+			                </div>
+			            </div>
+			            @if($hospedaje->id_usuario == Auth::user()->id)   
+			            	<br>
+			                <div class="pull-right">
+			                	<a href="{{ url('hospedajes/misHospedajes') }}" class="btn btn-success btn-sm"></i>Volver</a>			
+			                </div>
+			            @else
+	                 		<br>
+			                <div class="pull-right">
+			                	<a href="{{ route('Hospedaje.index') }}" class="btn btn-success btn-sm"></i>Volver</a>			
+			                </div>
+			            @endIf			           
+	                @endforeach
 				</div>
 			</div>
 		</div>
-	</div>
-	
-	
-			   	
+	</div>		   	
 </div>
  
 <script src="js/jquery.js"></script>
