@@ -106,7 +106,7 @@
 										</div>
 										<div class="form-group">
 											<div style="padding-left:30px;">	
-												{!! Form::submit('Comentar', ['class' => 'btn btn-success btn-sm']) !!}	     			
+												{!! Form::submit('Comentar', ['class' => 'btn btn-info btn-sm']) !!}	     			
 								    							    		
 											</div>
 										    {!! Form::close() !!}									
@@ -126,6 +126,7 @@
 	      							<div class="panel-body">
 	      								
 				                 		@foreach($comentarios as $coment)
+
 				                 			<br />
 					                 		<div class="comentario"> 
 						                 		<h4><i>{{$coment->nomUsuario}}</i></h4>
@@ -134,9 +135,13 @@
 						                 		</div>
 						                 		<hr>
 						                 		<div class="form-group">
-							                		<label><h5>{{ $coment->comentario }}</h5> </label>
-						                			@if($hospedaje->id_usuario == Auth::user()->id)
-						                					<br />				                								                								                										                
+							                		<label>
+							                			<h5>{{ $coment->comentario }}</h5> 
+							                		</label>
+						                		
+					                					<br />		
+					                				@if($coment->id_respuesta == -1)		                								                								                										                
+					                					@if($hospedaje->id_usuario == Auth::user()->id)						                			
 							                				<div class= "glyphicon glyphicon-share-alt"></div>
 							                				<a  data-toggle="modal" data-target="#createModal{{$coment->id}}">
 							                					Responder
@@ -151,15 +156,29 @@
                                                      								<h4 class="modal-title">Respuesta</h4>
                                                 							</div>
                                                 							<div class="modal-body">
-                                                							
+	                                                							{!! Form::open([
+	                                                								'url' => 'comentario/sotreRespuesta', 
+	                                                								'method' => 'POST'
+	                                                							]) !!}
+	                                                							{!! Form::hidden('id_comentario', $coment->id) !!}
+	                                                							{!! Form::textarea('respuesta', null, ['class' => 'form-control respuesta ']) !!}	                                                						
                                                 								
                                                 							</div>
                                                 							 <div class="modal-footer">
-        																		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                							 	<button type="submit" class="btn btn-info btn-xs">Responder</button>
+                                                							 	{!! Form::close() !!} 
+        																		<button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Cancelar</button>
       																		</div>                                                							                                                					
                                                 					</div>
                                                 				</div>
                                                 			</div>
+                                                		@endIf
+                                                	@else
+                                                		
+                                                			<a  data-toggle="collapse" data-target="#collap{{$coment->id}}"><i>Ver Respuesta</i></a>
+  															<div id="collap{{$coment->id}}" class="collapse">
+  																{{$coment->respuesta}}  														  															
+  														  	</div>                                                		
                                                 	@endIf
                                                 </div>							                			
 							                		

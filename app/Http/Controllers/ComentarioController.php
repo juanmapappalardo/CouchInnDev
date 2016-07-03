@@ -9,6 +9,7 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
 use App\Comentario;
+use App\Respuesta;
 
 use Session; 
 
@@ -41,7 +42,31 @@ class ComentarioController extends Controller
             return redirect()->back();
 
     	}
+	}
 
+	public function sotreRespuesta(Request $request){
+
+		$this->validate($request, [
+			'respuesta' => 'required'
+		]);
+
+		$inputResp = array(); 
+		$inputResp['id_comentario'] = $request->input('id_comentario'); 
+		$inputResp['respuesta'] = $request->input('respuesta'); 
+		$inputResp['id_usuario'] = Auth::user()->id; 
+		Respuesta::create($inputResp);		
+
+		 
+		$idResp = Respuesta::getMaxId(); 
+
+		$dataComent = array(); 
+		$dataComent['id_resp'] = $idResp; 
+		$dataComent['id_coment'] = $request->input('id_comentario'); 
+
+		Comentario::updateIdResp($dataComent); 
+		
+		Session::flash('alert-success', 'Respuesta guardada con éxito!');     	
+    	return redirect()->back();
 
 
 	}

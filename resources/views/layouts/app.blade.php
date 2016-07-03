@@ -88,6 +88,16 @@
             max-height:250px; 
         }
 
+        textarea.respuesta{
+            width: 568px; 
+            min-width:568px; 
+            max-width:568px; 
+
+            height:250px; 
+            min-height:250px; 
+            max-height:250px; 
+        }
+
         p.large {
             border: 1px solid #888888;         
             line-height: 60px;

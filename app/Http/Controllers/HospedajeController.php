@@ -101,7 +101,7 @@ class HospedajeController extends Controller
         
         $hospedaje= Hospedaje::getHospedaje($id);
         $imgs = $this->getImagenesHosp($id); 
-        $comentarios = Comentario::getComentarios($id); 
+        $comentarios = Comentario::getComentariosConRespuestas($id); 
         
 
         return view('pages.Hospedaje.show', array('hospedajes' => $hospedaje, 'imagenes' =>$imgs, 'id_hospedaje' => $id, 'comentarios' => $comentarios)); 

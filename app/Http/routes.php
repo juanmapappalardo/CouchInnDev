@@ -20,6 +20,7 @@ Route::get('usuario/enviarLink' , 'UsuarioController@enviarLinkRecuperarClave');
 Route::group(['middleware' => 'auth'], function () {
 	Route::post('usuario/validarDonacion' , 'UsuarioController@validarDonacion'); 
 	Route::post('comentario/postearComentario', 'ComentarioController@storeComentario'); 
+	Route::post('comentario/sotreRespuesta', 'ComentarioController@sotreRespuesta');
 	Route::post('hospedaje/eliminarImagen/', 'HospedajeController@eliminarImagenHosp'); 
 
 	Route::get('usuario/getViewDonacion', 'UsuarioController@getViewDonacion'); 
