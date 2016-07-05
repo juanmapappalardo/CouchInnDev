@@ -167,6 +167,11 @@
             border: 1px solid #D3D3D3;
         }
 
+        .selectxs{
+            width:75px;
+            height:30px;
+        }
+
     </style>
 
 </head>

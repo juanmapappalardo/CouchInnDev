@@ -10,6 +10,8 @@ use App\Hospedaje;
 use App\Propiedad;
 use App\ImagenesHospedaje;
 use App\Comentario;
+use App\Resenia;
+
 use Session; 
 use DB; 
 use Carbon\Carbon;
@@ -102,9 +104,9 @@ class HospedajeController extends Controller
         $hospedaje= Hospedaje::getHospedaje($id);
         $imgs = $this->getImagenesHosp($id); 
         $comentarios = Comentario::getComentariosConRespuestas($id); 
-        
+        $resenias = Resenia::getResenias($id); 
 
-        return view('pages.Hospedaje.show', array('hospedajes' => $hospedaje, 'imagenes' =>$imgs, 'id_hospedaje' => $id, 'comentarios' => $comentarios)); 
+        return view('pages.Hospedaje.show', array('hospedajes' => $hospedaje, 'imagenes' =>$imgs, 'id_hospedaje' => $id, 'comentarios' => $comentarios, 'resenias' => $resenias)); 
     }
 
     /**

@@ -52,9 +52,44 @@
 					                    	<button type="submit" class="btn btn-danger btn-xs">Cancelar</button>
 					                   	{!! Form::close() !!}
 					                </div>
-				                @endif
+					            @else     					            	
+						            @if($reserva->concretada)		
+					                	@if(!$reserva->puntuada) 
+				                			<button type="button" data-toggle="modal" data-target="#createModal{{$reserva->id_reserva}}" class="btn btn-success btn-xs">Puntuar Usuario</button>					    		
+											<!-- Modal -->
+											<div id="createModal{{$reserva->id_reserva}}" class="modal fade" role="dialog">
+											  <div class="modal-dialog">
 
+												  	<!-- Modal content-->
+												    <div class="modal-content">
+												        <div class="modal-header">
+		                                              		<button type="button" class="close" data-dismiss="modal">&times;</button>
+		                                                     	<h4 class="modal-title">Puntuar Usuario</h4>
+		                                                </div>
+		                                                <div class="modal-body">
+		                                            		{!! Form::open(['url' => 'puntaje/puntuarUsuario', 'method' => 'POST']) !!}
+		                                            		{!! Form::hidden('id_reserva', $reserva->id_reserva) !!}
+		                                            		{!! Form::hidden('id_usuario_creador', Auth::user()->id) !!}
+		                                            		{!! Form::hidden('id_usuario', $reserva->id_usu) !!}
 
+		                                         			<div class=" pull-left">
+						                            			{!! Form::label('puntaje', 'Puntaje:' ,['class' => 'control-label pull-left'])!!}
+						                            		</div>
+						                          			<div class="form-group">
+						                            			{{ Form::select('puntaje', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],0, ['class' => 'form-control selectxs']) }}
+						                            		</div>							                        
+		                                                </div>
+                            							<div class="modal-footer">
+                            							 	<button type="submit" class="btn btn-info btn-xs">Puntuar</button>
+                            							 	{!! Form::close() !!} 
+															<button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Cancelar</button>
+														</div>                                                							                                                					
+						                			</div>
+						                		</div>
+						                	</div>
+					                	@endif					            
+					                @endif
+					            @endif
 						    </td>
 					    </tr>
 					@endforeach

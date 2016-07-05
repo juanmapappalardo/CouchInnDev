@@ -9,6 +9,7 @@ use App\Http\Requests;
 
 use App\Reserva;
 use App\Hospedaje;
+use App\PuntajeUsuario;
 
 Use DB;
 use Session; 
@@ -24,24 +25,12 @@ class ReservasController extends Controller
      */
     public function index()
     {
-        $reservas = DB::table('reservas')
-                        ->join('hospedaje', 'hospedaje.id', '=','reservas.id_hospedaje')
-                        ->leftjoin('estados_reservas', 'reservas.id_estado', '=', 'estados_reservas.id_estado')
-                        ->select('hospedaje.id', 'hospedaje.titulo', 'reservas.fechaIni', 'reservas.fechaFin', 'estados_reservas.desc_estado', 'reservas.id_estado', 'reservas.id_hospedaje')
-                        ->where('reservas.id_usuario', Auth::user()->id)
-                        ->get(); 
+        $reservas = Reserva::getReservasUsuario(Auth::user()->id); 
 
         foreach ($reservas as  $reserva) {
-            $fechaFin = Carbon::createFromFormat('Y-m-d', $reserva->fechaFin);
-            if(($fechaFin->lte(\Carbon\Carbon::now())) && ($reserva->id_estado == 3)){
-                $reserva->concretada = 1; 
-            }
-            else{
-                $reserva->concretada = 0; 
-            }
+            $reserva->concretada = $this->esConcretada($reserva); 
             $reserva->fechaIni = Carbon::createFromFormat('Y-m-d', $reserva->fechaIni)->format('d/m/Y'); 
             $reserva->fechaFin = Carbon::createFromFormat('Y-m-d', $reserva->fechaFin)->format('d/m/Y'); 
-
         }
 
         return view('pages.Reservas.index', array('reservas' => $reservas)); 
@@ -218,7 +207,7 @@ class ReservasController extends Controller
                         ->join('users', 'reservas.id_usuario', '=', 'users.id')
                         ->leftjoin('estados_reservas', 'estados_reservas.id_estado', '=', 'reservas.id_estado')
                         ->leftjoin('hospedaje', 'hospedaje.id', '=','reservas.id_hospedaje')
-                        ->select('reservas.id_reserva', 'hospedaje.titulo', 'users.name', 'reservas.fechaIni', 'reservas.fechaFin', 'estados_reservas.desc_estado', 'reservas.id_estado')
+                        ->select('reservas.id_reserva', 'hospedaje.titulo', 'users.name','users.id as id_usu', 'reservas.fechaIni', 'reservas.fechaFin', 'estados_reservas.desc_estado', 'reservas.id_estado')
                         ->where('reservas.id_hospedaje', $id)
                         ->get();
 
@@ -227,8 +216,11 @@ class ReservasController extends Controller
 
         foreach ($reservas as  $reserva) {
             $reserva->fechaIni = Carbon::createFromFormat('Y-m-d', $reserva->fechaIni)->format('d/m/Y'); 
-            $reserva->fechaFin = Carbon::createFromFormat('Y-m-d', $reserva->fechaFin)->format('d/m/Y'); 
-        
+            $reserva->fechaFin = Carbon::createFromFormat('Y-m-d', $reserva->fechaFin)->format('d/m/Y');
+
+            $reserva->puntuada = $this->esPuntuada($reserva->id_reserva);
+            $reserva->concretada = $this->esConcretada($reserva); 
+ 
         }
 
         return view('pages.Reservas.indexReservaHospedaje', array('reservas' => $reservas, 'titHosp' => $titulo));                    
@@ -284,8 +276,26 @@ class ReservasController extends Controller
     public function couchRealizados(){
         $couchs = Reserva::getCouchRealizados(); 
 
-        return view('pages.Reservas.couchRealizados', array('couchs' => $couchs)); 
-        
+        return view('pages.Reservas.couchRealizados', array('couchs' => $couchs));         
+    }
+
+    private function esConcretada($reserva){
+        $fechaFin = Carbon::createFromFormat('d/m/Y', $reserva->fechaFin);
+        if(($fechaFin->lte(\Carbon\Carbon::now())) && ($reserva->id_estado == 3)){
+            return 1; 
+        }
+        else{
+            return  0; 
+        }
+    }
+
+    private function esPuntuada($id_reserva){
+        if(PuntajeUsuario::sinPuntaje($id_reserva)){
+            return 0; 
+        }
+        else{
+            return 1; 
+        }
     }
 
 }

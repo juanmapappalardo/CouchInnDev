@@ -29,4 +29,15 @@ class Reserva extends Model
     				  ->get(); 
     	return $couchs; 
     }
+
+    static function getReservasUsuario($idUsuario){
+        $reserv = DB::table('reservas')
+                        ->join('hospedaje', 'hospedaje.id', '=','reservas.id_hospedaje')
+                        ->leftjoin('resenia_hospedaje', 'resenia_hospedaje.id_reserva','=','reservas.id_reserva')
+                        ->leftjoin('estados_reservas', 'reservas.id_estado', '=', 'estados_reservas.id_estado')
+                        ->select('hospedaje.id', 'hospedaje.titulo', 'reservas.fechaIni', 'reservas.fechaFin', 'estados_reservas.desc_estado', 'reservas.id_estado', 'reservas.id_hospedaje', 'resenia_hospedaje.id as id_resenia', 'reservas.id_reserva')
+                        ->where('reservas.id_usuario', $idUsuario)
+                        ->get(); 
+        return $reserv; 
+    }
 }

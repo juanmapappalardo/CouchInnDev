@@ -22,6 +22,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('comentario/postearComentario', 'ComentarioController@storeComentario'); 
 	Route::post('comentario/sotreRespuesta', 'ComentarioController@sotreRespuesta');
 	Route::post('hospedaje/eliminarImagen/', 'HospedajeController@eliminarImagenHosp'); 
+	Route::post('resenia/storeResenia', 'ReseniaController@storeResenia'); 
+	Route::post('puntaje/puntuarUsuario', 'PuntajeUsuarioController@puntuarUsuario'); 
 
 	Route::get('usuario/getViewDonacion', 'UsuarioController@getViewDonacion'); 
 	Route::get('hospedaje/buscar', 'HospedajeController@buscarHospedaje'); 

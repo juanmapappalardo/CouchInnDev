@@ -67,7 +67,5 @@ class ComentarioController extends Controller
 		
 		Session::flash('alert-success', 'Respuesta guardada con éxito!');     	
     	return redirect()->back();
-
-
-	}
+	}	
 }

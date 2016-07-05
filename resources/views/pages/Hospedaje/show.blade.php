@@ -25,17 +25,6 @@
 					   		@if(!empty(array_values($imagenes)[2]))     	
 					   			<div class="item">{!! Html::image(array_values($imagenes)[2]->pathFoto,'',['class' => 'img-rounded', 'width' => 460, 'height' => 345,'aling' => 'middle']) !!}</div>
 					   		@endif
-					   		<!--
-					   			HACER LO MISMO PARA LAS 3 IMAGENES!!!
-					   		-->
-					      	
-					      	<!--
-					        <div class="active item">{!! Html::image('imagenes/couch/img_chania.jpg','',['width' => 460, 'height' => 345,'aling' => 'middle']) !!}</div>
-					        <div class="item">{!! Html::image('imagenes/couch/img_chania.jpg','',['width' => 460, 'height' => 345,'aling' => 'middle']) !!}</div>
-					        <div class="item">{!! Html::image('imagenes/couch/img_chania2.jpg','',['width' => 460, 'height' => 345,'aling' => 'middle']) !!}</div>
-					        <div class="item">{!! Html::image('imagenes/couch/img_flower.jpg','',['width' => 460, 'height' => 345,'aling' => 'middle']) !!}</div>
-					        <div class="item">{!! Html::image('imagenes/couch/img_flower2.jpg','',['width' => 460, 'height' => 345,'aling' => 'middle']) !!}</div>
-					        -->
 					      </div>
 					      <!-- Carousel nav -->
 
@@ -186,6 +175,35 @@
 				                 		@endforeach
 				                 	</div>
 			                	</div>
+			                	<div class="panel panel-default">
+    								<div class="panel-heading">
+      									<h4 class="panel-title">
+        									<a data-toggle="collapse" data-parent="#accordion" href="#collapse3"><i>Experiencias de otros Usuarios</i></a>
+      									</h4>
+	    							</div>
+    								<div id="collapse3" class="panel-collapse collapse">
+	      								<div class="panel-body">
+	      									@foreach($resenias as $resenia)	      									
+					                 			<br />
+						                 		<div class="comentario"> 
+						                 			<h4><i>{{$resenia->name}}</i></h4>
+							                 		<div class="pull-rigth">
+						                 				<h6><i>{{$resenia->created_at}}</i></h6>
+						                 			</div>
+						                 			<hr>
+						                 			<div class="form-group">
+								                		<label>
+								                			<h5>{{ $resenia->resenia }}</h5> 
+								                		</label>								                										                		
+								                	</div>
+								                	<div class="form-group">								                		
+								                		<label><i>Puntaje: {{$resenia->puntaje}}</i></label>
+								                	</div>
+						                 		</div>
+						                 	@endforeach
+	      								</div>
+	      							</div>
+	      						</div>
 			                </div>
 			            
 				            @if($hospedaje->id_usuario == Auth::user()->id)   
