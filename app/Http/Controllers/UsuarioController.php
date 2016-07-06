@@ -86,7 +86,7 @@ class UsuarioController extends Controller
             'apellido' => 'required|regex:/[A-Za-z\s]/|max:255',
             'fechaNacimiento' => 'required|date_format:d/m/Y',
             'provincia' => 'required|regex:/[A-Za-z\s]/|max:255',
-            'telefono' => 'required|numeric|digits_between:10,12'        
+            'telefono' => 'numeric|digits_between:10,12'        
         ]);
         /*        $desde = Carbon::createFromFormat('H:i', $request->input('desde'));
         $input['desde'] = $desde;

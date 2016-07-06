@@ -187,7 +187,8 @@ class HospedajeController extends Controller
           
 
             //filtro de request los datos para los dos modelos
-            $inputProp = $this->getInputPropiedad($request, $idProp); //retorna el arreglo necesario para almacenarlo con el modelo Propiedad
+            $inputProp = $this->getInputPropiedad($request); //retorna el arreglo necesario para almacenarlo con el modelo Propiedad
+            $inputProp['idPropiedad'] = $idProp; 
             $inputHospedaje = $this->getInputHospedaje($request); 
 
             //actualizo los modelos
@@ -251,7 +252,7 @@ class HospedajeController extends Controller
 
     }
 
-    private function getInputPropiedad(Request $request, $idProp){
+    private function getInputPropiedad(Request $request){
         //del request saca los datos necesarios para dar de alta una Propiedad
         $inputPropiedad = array(); 
         $inputPropiedad['calle']=$request->input('calle'); 
@@ -260,7 +261,7 @@ class HospedajeController extends Controller
         $inputPropiedad['idProvincia']= $request->input('id'); 
         $inputPropiedad['idTipoHospedaje']= $request->input('idTipoHospedaje'); 
         $inputPropiedad['nro']=$request->input('nro'); 
-        $inputPropiedad['idPropiedad'] = $idProp; 
+        
 
         return $inputPropiedad; 
     }
