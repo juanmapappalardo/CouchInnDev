@@ -30,4 +30,14 @@ class Resenia extends Model
     	return $resenias; 
     }
 
+    static function getReseniaUsuario($id){
+        $resenias = DB::table('resenia_hospedaje')
+                        ->join('reservas', 'reservas.id_reserva', '=', 'resenia_hospedaje.id_reserva')
+                        ->leftjoin('hospedaje', 'hospedaje.id', '=', 'reservas.id_hospedaje')                        
+                        ->leftjoin('users', 'users.id', '=', 'resenia_hospedaje.id_usu_creador')
+                        ->select('resenia_hospedaje.*', 'hospedaje.*', 'users.name')
+                        ->where('resenia_hospedaje.id_usu_creador', $id)
+                        ->get(); 
+        return $resenias; 
+    }
 }

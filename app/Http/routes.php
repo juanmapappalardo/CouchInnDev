@@ -25,6 +25,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('resenia/storeResenia', 'ReseniaController@storeResenia'); 
 	Route::post('puntaje/puntuarUsuario', 'PuntajeUsuarioController@puntuarUsuario'); 
 
+
+	Route::get('usuario/seguimiento/{id}', 'UsuarioController@getSeguimiento'); 
+	Route::get('hospedaje/eliminarHospAdmin', 'HospedajeController@eliminarHospAdmin'); 
 	Route::get('usuario/getViewDonacion', 'UsuarioController@getViewDonacion'); 
 	Route::get('hospedaje/buscar', 'HospedajeController@buscarHospedaje'); 
 	Route::get('hospedaje/comentarCouch/{id}', 'HospedajeController@comentarCouch'); 
@@ -32,6 +35,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('reservas/confirmarReserva/{id_reserva}', 'ReservasController@confirmarReserva');
 	Route::get('reservas/cancelarReserva/{id_reserva}', 'ReservasController@cancelarReserva');
 	Route::get('reservas/couchRealizados', 'ReservasController@couchRealizados'); 
+	Route::get('usuarios/getUsuarios', 'UsuarioController@getUsuarios'); 
+	Route::get('hospedaje/actDesc/{id}/{activar}', 'HospedajeController@actDesc'); 
 	
 	Route::get('hospedaje/verReservas/{id}', 'ReservasController@verReservas'); 
 	Route::get('hospedajes/misHospedajes', 'HospedajeController@misHospedajes'); 

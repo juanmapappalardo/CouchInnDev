@@ -22,6 +22,7 @@
 					<th>Fecha Inicio</th>
 					<th>Fecha Fin</th>
 					<th>Estado</th>				
+					<th>Puntaje Dado</th>				
 				</thead>
 				<tbody>
 					@foreach($reservas as $reserva)			 
@@ -31,6 +32,7 @@
 					    	<td class="table-text"><div>{{ $reserva->fechaIni }}</div></td>
 					    	<td class="table-text"><div>{{ $reserva->fechaFin }}</div></td>
 					    	<td class="table-text"><div>{{ $reserva->desc_estado }}</div></td>					    	
+					    	<td class="table-text"><div>{{ $reserva->puntaje }} </div></td>
 				    		
 				    		<td>
 				    			@if($reserva->id_estado == 2)

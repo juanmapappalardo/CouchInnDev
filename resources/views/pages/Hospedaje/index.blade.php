@@ -61,6 +61,8 @@
 					<th>Tipo</th>
 					<th>Capacidad</th>
 					<th>Provincia</th>
+					<th>Fecha Inicio</th>
+					<th>Fecha Fin</th>
 				</thead>
 				<tbody>
 					@foreach($hospedajes as $hospedaje)			 
@@ -71,6 +73,9 @@
 					    	<td class="table-text"><div>{{ $hospedaje->descTipoHosp }}</div></td>
 					    	<td class="table-text"><div>{{ $hospedaje->capacidad }}</div></td>
 					    	<td class="table-text"><div>{{ $hospedaje->provincia_nombre }}</div></td>
+					    	<td class="table-text"><div>{{ $hospedaje->fechaInicio}}</div></td>
+					    	<td class="table-text"><div>{{ $hospedaje->fechaFin}}</div></td>
+					    	
 
 
 				    		<td>
@@ -84,42 +89,68 @@
 		                               	'id' => 'formVer'
 		                            ]) !!}
 		                            <button type="submit" class="btn btn-success btn-xs">Detalle</button>								                            
-		                            {!! Form::close() !!}                                              									
+		                            {!! Form::close() !!}                                              											                            
 		                        </div>
-								@if($idUsuario == Auth::user()->id)				                  
-			                        <div class= "pull-right">
-					    				{!! Form::open([
-			                                'method' => 'GET',
-			                                'route' => ['Hospedaje.edit', $hospedaje->id]
-			                            ]) !!}
-			                            <button type="submit" class="btn btn-warning btn-xs">Editar</button>	
-			                            {!! Form::close() !!}                                              
-				                    </div>
-				                    <div class= "pull-right">					    			
-								 		{!! Form::open([
-				            				'method' => 'DELETE',
-				            				'route' => ['Hospedaje.destroy', $hospedaje->id],
-				            				'onsubmit' => 'return ConfirmAccion()'			            				
-				        				]) !!}
-				        				<button type="submit" class="btn btn-danger btn-xs">Eliminar</button>
+		                        @if($eliminar_hosp == 0)
+									@if($idUsuario == Auth::user()->id)				                  
+				                        <div class= "pull-right">
+						    				{!! Form::open([
+				                                'method' => 'GET',
+				                                'route' => ['Hospedaje.edit', $hospedaje->id]
+				                            ]) !!}
+				                            <button type="submit" class="btn btn-warning btn-xs">Editar</button>	
+				                            {!! Form::close() !!}                                              
+					                    </div>
+					                    <div class= "pull-right">					    			
+									 		{!! Form::open([
+					            				'method' => 'DELETE',
+					            				'route' => ['Hospedaje.destroy', $hospedaje->id],
+					            				'onsubmit' => 'return ConfirmAccion()'			            				
+					        				]) !!}
+					        				<button type="submit" class="btn btn-danger btn-xs">Eliminar</button>
+
+				                            {!! Form::close() !!}					    			
+				                        </div>
+				                        <div class= "pull-right">					    			
+										 	{!! Form::open([
+				                                'method' => 'GET',
+				                                'url' => ['hospedaje/verReservas', $hospedaje->id], 		                               	
+				                            ]) !!}
+					        				<button type="submit" class="btn btn-primary btn-xs">Ver Reservas</button>
+				                            {!! Form::close() !!}					    			
+				                        </div>
+				                    @else
+				                    	<div class= "pull-right">
+					                    	{!! Form::open([
+				                                'method' => 'GET',
+				                                'url' => ['reservas/crearId', $hospedaje->id], 		                               	
+				                            ]) !!}
+					                    	<button type="submit" class="btn btn-primary btn-xs">Reservar</button>
+					                    	{!! Form::close() !!}
+					                    </div>
+				                    @endif			        			
+				                @else 
+				                	<div class= "pull-right">					    			
+				                		@if($hospedaje->activo)
+									 		{!! Form::open([
+					            				'method' => 'GET',
+					            				'url' => ['hospedaje/actDesc', $hospedaje->id, 0],
+					            				'onsubmit' => 'return ConfirmAccion()'			            				
+					        				]) !!}					        					                            
+					        				<button type="submit" class="btn btn-info btn-xs">Desactivar</button>
+					        				{!! Form::close() !!}					    			
+				        				@else 
+									 		{!! Form::open([
+					            				'method' => 'GET',
+					            				'url' => ['hospedaje/actDesc', $hospedaje->id, 1],
+					            				'onsubmit' => 'return ConfirmAccion()'			            				
+					        				]) !!}					        					                            
+				        					<button type="submit" class="btn btn-warning btn-xs">Activar</button>					        								        					
+				        				@endif
 			                            {!! Form::close() !!}					    			
-			                        </div>
-			                        <div class= "pull-right">					    			
-									 	{!! Form::open([
-			                                'method' => 'GET',
-			                                'url' => ['hospedaje/verReservas', $hospedaje->id], 		                               	
-			                            ]) !!}
-				        				<button type="submit" class="btn btn-primary btn-xs">Ver Reservas</button>
-			                            {!! Form::close() !!}					    			
-			                        </div>
-			                    @else
-			                    	{!! Form::open([
-		                                'method' => 'GET',
-		                                'url' => ['reservas/crearId', $hospedaje->id], 		                               	
-		                            ]) !!}
-			                    	<button type="submit" class="btn btn-primary btn-xs">Reservar</button>
-			                    	{!! Form::close() !!}
-			                    @endif			        			
+									</div>
+
+				                @endif
 						    </td>
 					    </tr>
 					@endforeach

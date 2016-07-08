@@ -67,7 +67,17 @@ class Comentario extends Model
             ->update([
                     'coment.id_respuesta' => $dataComent['id_resp']
             ]); 
+    }
 
+    static function getComentarioUsuario($id){
+        $coment = DB::table('comentarios')
+                            ->join('users', 'users.id', '=', 'comentarios.id_usuario')                          
+                            ->leftjoin('respuestas_comentarios', 'respuestas_comentarios.id', '=', 'comentarios.id_respuesta')
+                            ->select('comentarios.*', 'users.name as nomUsuario','respuestas_comentarios.respuesta', 'respuestas_comentarios.created_at as create_resp')
+                            ->where('comentarios.id_usuario', $id)
+                            ->orderBy('comentarios.created_at')
+                            ->get(); 
+        return $coment;             
     }
 
 

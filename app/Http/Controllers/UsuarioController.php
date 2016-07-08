@@ -9,8 +9,21 @@ use Illuminate\Support\Facades\Auth;
 use Session; 
 Use DB; 
 //use App\User;
+
+/*
+        $hospedajes = Hospedaje::getHospedajesUsuario($id); 
+        $comentarios = Comentario::getComentarioUsuario($id); 
+        $resenias = Resenia::getReseniaUsuario($id); 
+        $reservas = Reserva::getReservasUsuario($id); 
+        $puntaje = PuntajeUsuario::getPuntajeUsuario($id); 
+*/
 use Carbon\Carbon;
 use App\Usuario;
+use App\Hospedaje;
+use App\Comentario;
+use App\Resenia;
+use App\Reserva;
+use App\PuntajeUsuario;
 
 class UsuarioController extends Controller
 {
@@ -163,5 +176,24 @@ class UsuarioController extends Controller
         //aca se debe retornar la vista para ingresar banco, nroTarjeta, monto de donacion. 
         return view('pages.Usuario.donacion');
        
+    }
+
+    public function getUsuarios(){
+        $usuarios = Usuario::getUsuarios(); 
+
+        return view('pages.Usuario.indexAdmin', array('usuarios' => $usuarios));         
+    }
+
+    public function getSeguimiento($id){
+    
+        $hospedajes = Hospedaje::getHospedajesUsuario($id); 
+        $comentarios = Comentario::getComentarioUsuario($id);         
+        $resenias = Resenia::getReseniaUsuario($id); 
+        $reservas = Reserva::getReservasUsuario($id); 
+        $puntaje = PuntajeUsuario::getPuntajeUsuario($id); 
+        $usuario = Usuario::getUsuario($id); 
+
+
+        return view('pages.Usuario.seguimiento', array('hospedajes' => $hospedajes, 'comentarios' => $comentarios, 'resenias' => $resenias, 'reservas' => $reservas, 'puntaje' => $puntaje, 'usuario' => $usuario[0])); 
     }
 }

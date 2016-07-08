@@ -222,13 +222,12 @@
                             </ul>
                         </li>
                     -->
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                Hospedajes<span class="caret"></span>
-                            </a>
-                             <ul class="dropdown-menu" role="menu">
-                                
-                               
+                        @if(Auth::user()->administrador == 0)
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    Hospedajes<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">                               
                                     <li>
                                         <a href="{{ route('Hospedaje.index') }}">Ver Hospedajes</a>
                                     </li>
@@ -238,28 +237,44 @@
                                     <li>
                                         <a href="{{ route('Reservas.index') }}">Ver mis Reservas</a>
                                     </li>
-                                      <li>
+                                    <li>
                                         <a href="{{ url('hospedajes/misHospedajes') }}">Mis Hospedajes</a>
-                                    </li>
-                                @if(Auth::user()->administrador > 0)
-                                    <li>
-                                        <a href="{{ route('TiposDeHospedaje.index')}}">Tipos de Hospedaje</a>
-                                    </li>
-                                @endif
-                            </ul>
-                        </li>                        
-                        @if(Auth::user()->administrador > 0)
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    Estadisticas<span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ url('reservas/couchRealizados') }}">Listar Couch's Relaizados</a>
-                                    </li>
+                                    </li>                                    
                                 </ul>
-                             </li>                        
+                            </li>                        
+                        @else 
+                            @if(Auth::user()->administrador == 1)
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        Hospedajes<span class="caret"></span>
+                                    </a>
+                                     <ul class="dropdown-menu" role="menu">                                     
+                                        <li>
+                                            <a href="{{ route('TiposDeHospedaje.index')}}">Tipos de Hospedaje</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url('hospedaje/eliminarHospAdmin')}}">Eliminar Hospedajes</a>
+                                        </li>
 
+                                     </ul>
+                                </li>                                
+
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                        Estadisticas<span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <a href="{{ url('reservas/couchRealizados') }}">Listar Couch's Relaizados</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url('usuarios/getUsuarios') }}">Usuarios</a>
+                                        </li>
+
+                                    </ul>
+                                </li>                        
+                                
+                            @endIf
                         @endif
 
 

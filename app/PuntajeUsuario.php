@@ -22,8 +22,24 @@ class PuntajeUsuario extends Model
     	}
     	else{
     		return 0; 
-    	}
-    	
+    	}	
+    }
+
+    static function getPuntajeUsuario($id){
+        $puntaje = DB::table('puntajes_usuario')
+                       ->join('reservas', 'reservas.id_reserva', '=', 'puntajes_usuario.id_reserva')
+                       ->leftjoin('hospedaje', 'hospedaje.id', '=', 'reservas.id_hospedaje')
+                       ->select('puntajes_usuario.*','reservas.*', 'hospedaje.titulo')
+                       ->where('puntajes_usuario.id_usuario', $id)
+                       ->get(); 
+        $totalPuntos = 0; 
+        foreach ($puntaje as $punt) {
+            $totalPuntos = $totalPuntos + $punt->puntaje; 
+        }
+
+        $puntaje['total_puntos'] = $totalPuntos; 
+
+        return $puntaje; 
     }
 
 }

@@ -25,7 +25,7 @@ class HospedajeController extends Controller
     public function index()
     {
 
-        $hospedajes = $this->getHospedajes(false); 
+        $hospedajes = Hospedaje::getHospedajesActivos(); 
         $provincias = Funciones::getProvinciasSelect(); 
         $provincias['-1'] = '-- Todas --'; 
 
@@ -35,7 +35,7 @@ class HospedajeController extends Controller
         $tipos = Funciones::getTiposHospedajesSelect(); 
         $tipos['-1'] = '-- Todas --'; 
 
-        return view('pages.Hospedaje.index', array('hospedajes' => $hospedajes,'provincias' => $provincias, 'ciudades' =>$ciudades , 'tiposHosp' => $tipos,'idUsuario' => -1));
+        return view('pages.Hospedaje.index', array('hospedajes' => $hospedajes,'provincias' => $provincias, 'ciudades' =>$ciudades , 'tiposHosp' => $tipos,'idUsuario' => -1, 'eliminar_hosp' => 0));
     }
 
     /**
@@ -78,6 +78,8 @@ class HospedajeController extends Controller
         Propiedad::create($inputProp); 
         
         $inputHosp = $this->getInputHospedaje($request); //retorna el arreglo necesario para almacenarlo con el modelo Hospedaje
+
+        $inputHosp['activo'] = 1; 
         Hospedaje::create($inputHosp); 
         $idHosp = DB::table('hospedaje')->max('id');
         $this->alamacenarImg($request,$idHosp); //gestiona el almacenamiento de imagenes en la carpeta public/imagenes, y en la base de datos 
@@ -416,13 +418,13 @@ class HospedajeController extends Controller
         $tipos = Funciones::getTiposHospedajesSelect(); 
         $tipos['-1'] = '-- Todas --'; 
 
-        return view('pages.Hospedaje.index', array('hospedajes' => $hospedajes,'provincias' => $provincias, 'ciudades' =>$ciudades , 'tiposHosp' => $tipos, 'idUsuario' => -1));
+        return view('pages.Hospedaje.index', array('hospedajes' => $hospedajes,'provincias' => $provincias, 'ciudades' =>$ciudades , 'tiposHosp' => $tipos, 'idUsuario' => -1, 'eliminar_hosp' => 0));
       
 //        dd($request); 
     }
 
     public function misHospedajes(){
-        $hospedajes = $this->getHospedajes(true); 
+        $hospedajes = Hospedaje::getMisHospedajes(); 
 
         $provincias = Funciones::getProvinciasSelect(); 
         $provincias['-1'] = '-- Todas --'; 
@@ -433,10 +435,10 @@ class HospedajeController extends Controller
         $tipos = Funciones::getTiposHospedajesSelect(); 
         $tipos['-1'] = '-- Todas --'; 
 
-        return view('pages.Hospedaje.index', array('hospedajes' => $hospedajes,'provincias' => $provincias, 'ciudades' =>$ciudades , 'tiposHosp' => $tipos,'idUsuario' => Auth::user()->id));
+        return view('pages.Hospedaje.index', array('hospedajes' => $hospedajes,'provincias' => $provincias, 'ciudades' =>$ciudades , 'tiposHosp' => $tipos,'idUsuario' => Auth::user()->id, 'eliminar_hosp' => 0));
 
     }
-
+    /*
     private function getHospedajes($misHosp){
         $hospedajes = DB::table('hospedaje')
         ->join('users', 'hospedaje.idUsuarioPublic', '=', 'users.id')
@@ -446,16 +448,20 @@ class HospedajeController extends Controller
         if($misHosp){
             $hospedajes = $hospedajes->where('hospedaje.idUsuarioPublic', '=', Auth::user()->id); 
         }
+
         
-        $hospedajes = $hospedajes
-                    ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp')
+        $hospedajes = $hospedajes                    
+                    ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp', 'hospedaje.fechaInicio', 'hospedaje.fechaFin', 'hospedaje.activo')
                     ->get();
 
-
+        foreach ($hospedajes as $hospedaje) {
+            $hospedaje->fechaInicio = Carbon::createFromFormat('Y-m-d', $hospedaje->fechaInicio)->format('d/m/Y'); 
+            $hospedaje->fechaFin = Carbon::createFromFormat('Y-m-d', $hospedaje->fechaFin)->format('d/m/Y'); 
+        }
 
         return $hospedajes; 
     }
-
+    */
     private function validarReservas($id){
         $reservas = DB::table('reservas')->where('id_estado', '<>', 1)->where('id_hospedaje', '=', $id)->get(); 
         if(!$reservas){
@@ -485,5 +491,31 @@ class HospedajeController extends Controller
         $imgs = $this->getImagenesHosp($idHospedaje); 
         $comentarios = Comentario::getComentarios($id); 
         return view('pages.Hospedaje.show', array('hospedajes' => $hospedaje, 'imagenes' =>$imgs,'id_hospedaje' => $idHospedaje, 'comentarios' => $comentarios)); 
+    }
+
+    public function eliminarHospAdmin(){
+        $hospedajes = Hospedaje::getHospedajes(); 
+        $provincias = Funciones::getProvinciasSelect(); 
+        $provincias['-1'] = '-- Todas --'; 
+
+        $ciudades= Funciones::getCiudadesSelect(); 
+        $ciudades['-1'] = '-- Todas --'; 
+
+        $tipos = Funciones::getTiposHospedajesSelect(); 
+        $tipos['-1'] = '-- Todas --'; 
+
+        return view('pages.Hospedaje.index', array('hospedajes' => $hospedajes,'provincias' => $provincias, 'ciudades' =>$ciudades , 'tiposHosp' => $tipos,'idUsuario' => -1, 'eliminar_hosp' => 1));
+    }
+
+    public function actDesc($idHosp, $activar){
+        Hospedaje::updateActivo($idHosp, $activar); 
+
+        if($activar == 1 ){                        
+            Session::flash('alert-success', 'Hospedaje activado correctamente!');           
+        }
+        else{
+            Session::flash('alert-danger', 'Hospedaje desactivando correctamente!');           
+        }
+        return redirect()->back(); 
     }
 }
