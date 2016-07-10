@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests;
 
+use App\Funciones;
 use App\Reserva;
 use App\Hospedaje;
 use App\PuntajeUsuario;
@@ -279,9 +280,13 @@ class ReservasController extends Controller
     }
 
     public function couchRealizados(){
-        $couchs = Reserva::getCouchRealizados(); 
 
-        return view('pages.Reservas.couchRealizados', array('couchs' => $couchs));         
+        $couchs = Reserva::getCouchRealizados(\Carbon\Carbon::now()->subMonth()->format('Y-m-d'), \Carbon\Carbon::now()->format('Y-m-d')); 
+        foreach ($couchs as $couch) {
+            $couch->fechaIni = Carbon::createFromFormat('Y-m-d', $couch->fechaIni)->format('d/m/Y'); 
+            $couch->fechaFin = Carbon::createFromFormat('Y-m-d', $couch->fechaFin)->format('d/m/Y'); 
+        }
+        return view('pages.Reservas.couchRealizados', array('couchs' => $couchs,'fechaIniFiltro' => \Carbon\Carbon::now()->subMonth()->format('d/m/Y') , 'fechaFinFiltro' => \Carbon\Carbon::now()->format('d/m/Y')));         
     }
 
     private function esConcretada($reserva){
@@ -303,4 +308,42 @@ class ReservasController extends Controller
         }
     }
 
+    public function buscarCouchs(Request $request){
+
+
+        /*
+            VALIDAR LAS FECHAS QUE LLEGAN EN EL REQUEST
+            BUSCAR LOS COUCHS COMO EN GETCOUCHREALIZADOS
+            DEVOLVER LA MISMA VISTA QUE ESTE METODO, MAS LOS FILTROS QUE ME LLEGARON EN EL REQUEST.
+        */
+        if(Funciones::validarFechasBuscar($request->input('fechaInicio'), $request->input('fechaFin'))){
+            $fIni = Carbon::createFromFormat('d/m/Y', $request->input('fechaInicio'))->format('Y-m-d'); 
+            $fFin = Carbon::createFromFormat('d/m/Y', $request->input('fechaFin'))->format('Y-m-d'); 
+
+            $couchs = Reserva::getCouchRealizados($fIni, $fFin); 
+
+            return view('pages.Reservas.couchRealizados', array('couchs' => $couchs,'fechaIniFiltro' => $request->input('fechaInicio') , 'fechaFinFiltro' => $request->input('fechaFin')));         
+        }
+        else{
+            return redirect()->back(); 
+        }
+    }
+    /*
+    private function validarFechasBuscarCouch($fechaIni, $fechaFin){
+        $fIni = Carbon::createFromFormat('d/m/Y', $fechaIni); 
+        $fFin = Carbon::createFromFormat('d/m/Y', $fechaFin); 
+        $ok = true; 
+        if($fIni->gt($fFin)){
+            Session::flash('alert-danger', 'La fecha de inicio no puede ser mayor a la fecha de fin');
+            $ok = false; 
+        }
+        if($fFin->gt(Carbon::now())){
+            Session::flash('alert-danger', 'La fecha de fin no puede ser mayor al día de hoy. ('.Carbon::now()->format('d/m/Y').')');
+            $ok = false; 
+        }
+
+        return $ok; 
+
+    }
+    */
 }

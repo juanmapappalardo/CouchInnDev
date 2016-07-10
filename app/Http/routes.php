@@ -37,6 +37,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('reservas/couchRealizados', 'ReservasController@couchRealizados'); 
 	Route::get('usuarios/getUsuarios', 'UsuarioController@getUsuarios'); 
 	Route::get('hospedaje/actDesc/{id}/{activar}', 'HospedajeController@actDesc'); 
+	Route::get('reserva/buscarCouchs', 'ReservasController@buscarCouchs'); 
+	Route::get('usuario/filtrarUsuarios', 'UsuarioController@filtrarUsuarios'); 
 	
 	Route::get('hospedaje/verReservas/{id}', 'ReservasController@verReservas'); 
 	Route::get('hospedajes/misHospedajes', 'HospedajeController@misHospedajes'); 

@@ -43,6 +43,7 @@
 							</th>
 
 						</thead>				
+					</table>
 				</div>			
 			</div>
 		@endif

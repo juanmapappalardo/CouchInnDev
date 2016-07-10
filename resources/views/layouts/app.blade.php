@@ -253,7 +253,7 @@
                                             <a href="{{ route('TiposDeHospedaje.index')}}">Tipos de Hospedaje</a>
                                         </li>
                                         <li>
-                                            <a href="{{ url('hospedaje/eliminarHospAdmin')}}">Eliminar Hospedajes</a>
+                                            <a href="{{ url('hospedaje/eliminarHospAdmin')}}">Hospedajes de Usuarios</a>
                                         </li>
 
                                      </ul>
@@ -261,15 +261,19 @@
 
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                        Estadisticas<span class="caret"></span>
+                                        Listados<span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
                                         <li>
-                                            <a href="{{ url('reservas/couchRealizados') }}">Listar Couch's Relaizados</a>
+                                            <a href="{{ url('reservas/couchRealizados') }}">Estadisticas de Couch's</a>
                                         </li>
                                         <li>
-                                            <a href="{{ url('usuarios/getUsuarios') }}">Usuarios</a>
+                                            <a href="{{ url('usuarios/getUsuarios') }}">Estadisticas de Usuarios</a>
                                         </li>
+                                        <li>
+                                            <a href="{{ url('usuarios/getUsuarios') }}">Hospedajes de Usuarios</a>
+                                        </li>
+
 
                                     </ul>
                                 </li>                        

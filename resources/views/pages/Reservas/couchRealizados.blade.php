@@ -13,7 +13,30 @@
 			@include('pages.partials.errors') 
 			@include('pages.partials.mensajes') 
 
-			
+			{!!Form::open([
+					'method' => 'GET',
+					'url' => 'reserva/buscarCouchs'
+			])!!}
+			<table class="table table-striped task-table">
+				<thead>					
+					<th>				
+						{!! Form::label('fechaInicio', 'Fecha de Inicio:  ', ['class' => 'control-label ']) !!}                                  
+						{!! Form::text('fechaInicio',$fechaIniFiltro , ['class' => ' form-control inputFecha datepicker']) !!}
+					</th>
+					<th>
+						<div class="pull-left"> 
+						    <label class="label-control"> Fecha Fin:</label>
+	                		{!! Form::text('fechaFin',$fechaFinFiltro, ['class' => 'form-control inputFecha datepicker ']) !!}
+	                	</div>
+                	</th>
+                	<th>
+						<button type="submit" class="btn btn-primary btn-sm">Filtrar</button>
+						{!! Form::close() !!}					    			
+
+                	</th>
+                </thead>
+            </table>
+
 			<table class="table table-striped task-table">
 				
 				<thead>
@@ -40,6 +63,9 @@
 					@endforeach
 				</tbody>
 			</table>
+		</div>
+		<div class="panel-footer">
+			<label>Total de Couch's : {{count($couchs)}}</label>
 		</div>
 	</div>
 </div>

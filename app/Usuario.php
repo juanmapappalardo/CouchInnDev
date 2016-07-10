@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 Use DB; 
 
 class Usuario extends Model
@@ -25,7 +25,7 @@ class Usuario extends Model
         'telefono'
     ]; 
 
-    static function getUsuarios(){
+    static function getUsuariosTodos(){
         $usuarios = DB::table('users')                        
                         ->where('administrador', 0)
                         ->get(); 
@@ -37,5 +37,16 @@ class Usuario extends Model
         $usuario = DB::table('users')->where('id', $id)->get(); 
 
         return $usuario; 
+    }
+
+    static function getUsuarios($fIni, $fFin){
+        
+        $usuarios = DB::table('users')                                    
+                ->where('users.created_at', '>=', $fIni)                
+                ->Where('users.created_at', '<=', $fFin)                
+                ->where('administrador', 0)
+                ->get(); 
+
+        return $usuarios; 
     }
 }

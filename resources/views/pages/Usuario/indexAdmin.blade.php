@@ -6,23 +6,47 @@
     
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h1>Tipos de Hospedaje</h1>
+			<h1>Estadistica de usuarios</h1>
 		</div>
 		<br />
-			@include('pages.partials.errors')                                         
+			@include('pages.partials.errors')                                         			
             @include('pages.partials.mensajes') 
 
 
 
 
 		<div class="panel-body">
-			
+			{!!Form::open([
+					'method' => 'GET',
+					'url' => 'usuario/filtrarUsuarios'
+			])!!}			
+			<table class="table table-striped task-table">
+				<thead>					
+					<th>				
+						{!! Form::label('fechaInicio', 'Fecha de Inicio:  ', ['class' => 'control-label ']) !!}                                  
+						{!! Form::text('fechaInicio',$fechaIniFiltro , ['class' => ' form-control inputFecha datepicker']) !!}
+					</th>
+					<th>
+						<div class="pull-left"> 
+						    <label class="label-control"> Fecha Fin:</label>
+	                		{!! Form::text('fechaFin',$fechaFinFiltro, ['class' => 'form-control inputFecha datepicker ']) !!}
+	                	</div>
+                	</th>
+                	<th>
+						<button type="submit" class="btn btn-primary btn-sm">Filtrar</button>
+						{!! Form::close() !!}					    			
+
+                	</th>
+                </thead>
+            </table>
+
 			<table class="table table-striped task-table">
 				<thead>
 					<th>Nombre</th>
 					<th>Apellido</th>
 					<th>Email</th>
 					<th>Provicia</th>
+					<th>Fecha Registro</th>
 					<th>Premium</th>
 				</thead>
 				<tbody>
@@ -32,6 +56,7 @@
 							<td class="table-text"><div>{{ $usuario->apellido}}</div></td>
 							<td class="table-text"><div>{{ $usuario->email }}</div></td>
 							<td class="table-text"><div>{{ $usuario->provincia }}</div></td>
+							<td class="table-text"><div>{{ $usuario->created_at }}</div></td>
 
 							@if($usuario->premium == 1)
 								<td class="table-text"><div><span class="glyphicon glyphicon-ok"></span></div></td>
@@ -54,6 +79,10 @@
 				</tbody>
 			</table>
 		</div>
+		<div class="panel-footer">
+			<label>Total de Usuarios : {{count($usuarios)}}</label>
+		</div>
+
 	</div>
 </div>
 @stop

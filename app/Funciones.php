@@ -2,6 +2,9 @@
 namespace App;
 
 use DB;
+use Carbon\Carbon;
+use Session; 
+
 
 class Funciones
 {
@@ -36,5 +39,22 @@ class Funciones
 		}
 
 		return $tiposHospedajes_sel; 
+	}
+
+	public static function validarFechasBuscar($fechaIni, $fechaFin){
+		$fIni = Carbon::createFromFormat('d/m/Y', $fechaIni); 
+        $fFin = Carbon::createFromFormat('d/m/Y', $fechaFin); 
+        $ok = true; 
+        
+        if($fIni->gt($fFin)){
+            Session::flash('alert-danger', 'La fecha de inicio no puede ser mayor a la fecha de fin');
+            $ok = false; 
+        }
+        if($fFin->gt(Carbon::now())){
+            Session::flash('alert-danger', 'La fecha de fin no puede ser mayor al día de hoy. ('.Carbon::now()->format('d/m/Y').')');
+            $ok = false; 
+        }
+
+        return $ok; 
 	}
 }

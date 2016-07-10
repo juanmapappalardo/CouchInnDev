@@ -8,21 +8,16 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Session; 
 Use DB; 
+use App\Funciones;
 //use App\User;
 
-/*
-        $hospedajes = Hospedaje::getHospedajesUsuario($id); 
-        $comentarios = Comentario::getComentarioUsuario($id); 
-        $resenias = Resenia::getReseniaUsuario($id); 
-        $reservas = Reserva::getReservasUsuario($id); 
-        $puntaje = PuntajeUsuario::getPuntajeUsuario($id); 
-*/
 use Carbon\Carbon;
 use App\Usuario;
 use App\Hospedaje;
 use App\Comentario;
 use App\Resenia;
 use App\Reserva;
+
 use App\PuntajeUsuario;
 
 class UsuarioController extends Controller
@@ -179,9 +174,30 @@ class UsuarioController extends Controller
     }
 
     public function getUsuarios(){
-        $usuarios = Usuario::getUsuarios(); 
+        $fIniBus = Carbon::createFromFormat('d/m/Y H:i:s',\Carbon\Carbon::now()->subMonth()->format('d/m/Y').' 00:00:00')->format('Y-m-d H:i:s'); 
+        $fFinBus = Carbon::createFromFormat('d/m/Y H:i:s',\Carbon\Carbon::now()->format('d/m/Y').' 23:59:59')->format('Y-m-d H:i:s'); 
+       
+        $usuarios = Usuario::getUsuarios($fIniBus, $fFinBus); 
 
-        return view('pages.Usuario.indexAdmin', array('usuarios' => $usuarios));         
+        //formatear fecha de registro
+
+        return view('pages.Usuario.indexAdmin', array('usuarios' => $usuarios, 'fechaIniFiltro' => \Carbon\Carbon::now()->subMonth()->format('d/m/Y') , 'fechaFinFiltro' => \Carbon\Carbon::now()->format('d/m/Y')));         
+    }
+
+    public function filtrarUsuarios(Request $request){
+        if(Funciones::validarFechasBuscar($request->input('fechaInicio'), $request->input('fechaFin'))){
+            $fIniBus = Carbon::createFromFormat('d/m/Y H:i:s',$request->input('fechaInicio').' 00:00:00')->format('Y-m-d H:i:s'); 
+            $fFinBus = Carbon::createFromFormat('d/m/Y H:i:s',$request->input('fechaFin').'23:59:59')->format('Y-m-d H:i:s'); 
+           
+            $usuarios = Usuario::getUsuarios($fIniBus, $fFinBus); 
+            //formatear fecha de registro
+
+            return view('pages.Usuario.indexAdmin', array('usuarios' => $usuarios, 'fechaIniFiltro' => $request->input('fechaInicio') ,'fechaFinFiltro' => $request->input('fechaFin')));                 
+        }
+        else{
+            return redirect()->back();
+        } 
+
     }
 
     public function getSeguimiento($id){
