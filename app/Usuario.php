@@ -49,4 +49,10 @@ class Usuario extends Model
 
         return $usuarios; 
     }
+
+    static function updatePremium($id){
+        return DB::table('users')
+            ->where('id',$id)
+            ->update(['premium' => 1]); 
+    }
 }

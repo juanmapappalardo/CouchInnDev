@@ -19,23 +19,24 @@
 						'method' => 'GET',
 						'url' => 'hospedaje/buscar'
 					])!!}
+					{{Form::hidden('eliminar_hosp', $eliminar_hosp)}}
 					<table class="table table-striped task-table">
 						<thead>					
 							<th>
 								<label>Ciudad</label>	
-								{!! Form::select('id_ciudad',$ciudades, '-1', ['class' => 'form-control styled-select ']) !!}
+								{!! Form::select('id_ciudad',$ciudades, $filtros['id_ciudad'], ['class' => 'form-control styled-select ']) !!}
 							</th>
 							<th>
 								<label>Provincia</label>	
-								{!! Form::select('id_provincia',$provincias, '-1', ['class' => 'form-control styled-select']) !!}							
+								{!! Form::select('id_provincia',$provincias,  $filtros['id_provincia'], ['class' => 'form-control styled-select']) !!}							
 							</th>
 							<th>
 								<label>Tipo de Hospedaje</label>	
-								{!! Form::select('idTipoHosp',$tiposHosp, '-1', ['class' => 'form-control styled-select']) !!}							
+								{!! Form::select('idTipoHosp',$tiposHosp, $filtros['idTipoHosp'], ['class' => 'form-control styled-select']) !!}							
 							</th>
 							<th>
 								<label>Titulo</label>
-								{!! Form::text('titulo', null, ['class' => ' form-control styled-select']) !!}
+								{!! Form::text('titulo', $filtros['titulo'], ['class' => ' form-control styled-select']) !!}
 							</th>
 							<th>	
 								<button type="submit" class="btn btn-primary btn-sm">Buscar</button>
@@ -75,14 +76,43 @@
 					    	<td class="table-text"><div>{{ $hospedaje->capacidad }}</div></td>
 					    	<td class="table-text"><div>{{ $hospedaje->provincia_nombre }}</div></td>
 					    	<td class="table-text"><div>{{ $hospedaje->fechaInicio}}</div></td>
-					    	<td class="table-text"><div>{{ $hospedaje->fechaFin}}</div></td>
-					    	
+					    	<td class="table-text"><div>{{ $hospedaje->fechaFin}}</div></td>					    	
+					    	<td>
+					    		@if(($idUsuario == -1) && ($eliminar_hosp == 0))
+					    			@if($hospedaje->premium == 1)
+					    					
+			                				<button  class="btn btn-warning btn-xs" data-toggle="modal" data-target="#createModal{{$hospedaje->id}}">
+			                					Ver Imagen
+			                				</button>
+			                				<div class="modal fade" id="createModal{{$hospedaje->id}}" role="dialog">
+			            						<div class="modal-dialog">
+			        								<!-- MODAL CONTENT-->
+			                						<div class="modal-content">
+			                    						<!-- MODAL HEADER-->
+			                							<div class="modal-header">
+			                    							<button type="button" class="close" data-dismiss="modal">&times;</button>
+			                     								<h4 class="modal-title">Imagen del Hospedaje: <label><i><h5>{{$hospedaje->titulo}}</h5></i></label></h4>
+			                							</div>
+			                							<div class="modal-body">					    							    		
+			                								@if($hospedaje->pathFoto)	
+			                									{!! Html::image($hospedaje->pathFoto,'',['class' => 'img-rounded' , 'width' => 460, 'height' => 345,'aling' => 'middle']) !!}
+			                								@else
+			                									<label><i>Hospedaje sin imagen</i></label>
+			                								@endif
+			                							</div>
+			                							<div class="modal-footer">
 
+															<button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Cancelar</button>
+														</div>                                                							                                                					
+													</div>
+												</div>
+											</div>											    	
+										
+							    	@endIf
+							   	@endif
+					    	</td>
 
-				    		<td>
-
-
-					    		
+					    	<td>
 			                    <div class= "pull-right">
 				    				{!! Form::open([
 		                                'method' => 'GET',

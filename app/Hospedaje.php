@@ -22,14 +22,14 @@ class Hospedaje extends Model
 
     static function getHospedaje($id){
 
-    	$hospedaje = DB::table('hospedaje')
+    	$hospedajes = DB::table('hospedaje')
 				        ->join('users', 'hospedaje.idUsuarioPublic', '=', 'users.id')
 				        ->leftjoin('Propiedad', 'hospedaje.idPropiedad','=', 'Propiedad.idPropiedad')
 				        ->leftjoin('provincia', 'Propiedad.idProvincia', '=', 'provincia.id')
 				        ->leftjoin('TiposDeHospedaje', 'Propiedad.idTipoHospedaje', '=', 'TiposDeHospedaje.id')
 				        ->leftjoin('ciudad', 'Propiedad.idCiudad', '=', 'ciudad.id_ciudad')
 
-				        ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp' , 'hospedaje.descripHosp','ciudad.ciudad_nombre', 'users.id as id_usuario', 'hospedaje.activo')
+				        ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp' , 'hospedaje.descripHosp','ciudad.ciudad_nombre', 'users.id as id_usuario', 'hospedaje.activo', 'hospedaje.idPropiedad', 'hospedaje.fechaInicio', 'hospedaje.fechaFin')
 				        ->where('hospedaje.id', '=', $id)
 				        ->get();
         foreach ($hospedajes as $hospedaje) {
@@ -38,7 +38,7 @@ class Hospedaje extends Model
         }
 
 
-		return $hospedaje;
+		return $hospedajes;
 
     }
 
@@ -62,9 +62,9 @@ class Hospedaje extends Model
             ->join('users', 'hospedaje.idUsuarioPublic', '=', 'users.id')
             ->leftjoin('Propiedad', 'hospedaje.idPropiedad','=', 'Propiedad.idPropiedad')
             ->leftjoin('provincia', 'Propiedad.idProvincia', '=', 'provincia.id')
-            ->leftjoin('TiposDeHospedaje', 'Propiedad.idTipoHospedaje', '=', 'TiposDeHospedaje.id')
+            ->leftjoin('TiposDeHospedaje', 'Propiedad.idTipoHospedaje', '=', 'TiposDeHospedaje.id')        
             ->where('hospedaje.activo', '=', 1)
-            ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp', 'hospedaje.fechaInicio', 'hospedaje.fechaFin', 'hospedaje.activo')
+            ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp', 'hospedaje.fechaInicio', 'hospedaje.fechaFin', 'hospedaje.activo', 'users.premium', 'hospedaje.idPropiedad')
             ->get();
 
         foreach ($hospedajes as $hospedaje) {

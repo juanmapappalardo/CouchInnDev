@@ -271,10 +271,12 @@
                                             <a href="{{ url('usuarios/getUsuarios') }}">Estadisticas de Usuarios</a>
                                         </li>
                                         <li>
-                                            <a href="{{ url('usuarios/getUsuarios') }}">Hospedajes de Usuarios</a>
+                                            <a href="{{ url('donacion/getDonaciones') }}">Estadisticas económicas</a>
                                         </li>
 
-
+                                        <li>
+                                            <a href="{{ url('usuarios/getUsuarios') }}">Usuarios</a>
+                                        </li>
                                     </ul>
                                 </li>                        
                                 

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+Use DB;
 
 class ImagenesHospedaje extends Model
 {
@@ -10,6 +11,17 @@ class ImagenesHospedaje extends Model
 
      protected $fillable = [
         'idHospedaje', 
-        'pathFoto'
+        'pathFoto', 
+        'idPropiedad'
     ];
+
+    static function getImagenHospedaje($idHospedaje){
+    	$imagen = DB::table('imagenesHospedaje')->where('imagenesHospedaje.idHospedaje', $idHospedaje)->get(); 
+    	$path = ''; 
+    	foreach ($imagen as $img) {
+    		$path = $img->pathFoto; 	
+    	}
+    	
+    	return $path; 
+    }
 }

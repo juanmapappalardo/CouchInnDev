@@ -17,6 +17,7 @@ use App\Hospedaje;
 use App\Comentario;
 use App\Resenia;
 use App\Reserva;
+use App\Donacion;
 
 use App\PuntajeUsuario;
 
@@ -147,10 +148,16 @@ class UsuarioController extends Controller
     {
         if(($request->tipoTarj == 'VISA') and ($request->nroTarjeta == '1111') and ($request->codSeg == '222') and ($request->fechVenc == '01/17')/* and ($request->nomTitular == 'Batman')*/){
             $id = Auth::user()->id; 
-            $result = DB::table('users')
-            ->where('id',$id)
-            ->update(['premium' => 1]); 
+            
+
+            $result =Usuario::updatePremium($id);             
             if($result){
+                /*guardar donacion*/
+                $donacion = array(); 
+                $donacion['id_usuario'] = Auth::user()->id; 
+                $donacion['monto'] = 300; 
+                Donacion::create($donacion); 
+                
                 Session::flash('alert-success', 'Donación realizada con éxito. Usted ya puede disfrutar de los beneficios de ser Usuario Premium'); 
             }
             else{

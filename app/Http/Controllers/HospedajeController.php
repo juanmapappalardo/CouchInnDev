@@ -35,7 +35,16 @@ class HospedajeController extends Controller
         $tipos = Funciones::getTiposHospedajesSelect(); 
         $tipos['-1'] = '-- Todas --'; 
 
-        return view('pages.Hospedaje.index', array('hospedajes' => $hospedajes,'provincias' => $provincias, 'ciudades' =>$ciudades , 'tiposHosp' => $tipos,'idUsuario' => -1, 'eliminar_hosp' => 0));
+
+        foreach ($hospedajes as $hospedaje) {
+            $id = $hospedaje->id;              
+            $hospedaje->pathFoto = ImagenesHospedaje::getImagenHospedaje($id); 
+        }
+
+        $filtros = $this->getClearFiltros(); 
+
+
+        return view('pages.Hospedaje.index', array('hospedajes' => $hospedajes,'provincias' => $provincias, 'ciudades' =>$ciudades , 'tiposHosp' => $tipos,'idUsuario' => -1, 'eliminar_hosp' => 0,'filtros' => $filtros));
     }
 
     /**
@@ -406,8 +415,15 @@ class HospedajeController extends Controller
             $hospedajes=$hospedajes->orWhere('hospedaje.titulo', 'Like', '%'.$request->input('titulo').'%'); 
         }
         $hospedajes = $hospedajes
-                    ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp')
+                    ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp', 'hospedaje.fechaInicio', 'hospedaje.fechaFin', 'users.premium', 'hospedaje.activo')
                     ->get();
+
+        foreach ($hospedajes as $hosp) {
+            /*imagenes y formatear fecha*/
+            $hosp->pathFoto = ImagenesHospedaje::getImagenHospedaje($hosp->id);
+            $hosp->fechaInicio = Carbon::createFromFormat('Y-m-d', $hosp->fechaInicio)->format('d/m/Y'); 
+            $hosp->fechaFin = Carbon::createFromFormat('Y-m-d', $hosp->fechaFin)->format('d/m/Y');                         
+        }                    
 
         $provincias = Funciones::getProvinciasSelect(); 
         $provincias['-1'] = '-- Todas --'; 
@@ -417,8 +433,11 @@ class HospedajeController extends Controller
 
         $tipos = Funciones::getTiposHospedajesSelect(); 
         $tipos['-1'] = '-- Todas --'; 
+        
+        $filtros = $this->getFiltros($request); 
 
-        return view('pages.Hospedaje.index', array('hospedajes' => $hospedajes,'provincias' => $provincias, 'ciudades' =>$ciudades , 'tiposHosp' => $tipos, 'idUsuario' => -1, 'eliminar_hosp' => 0));
+
+        return view('pages.Hospedaje.index', array('hospedajes' => $hospedajes,'provincias' => $provincias, 'ciudades' =>$ciudades , 'tiposHosp' => $tipos, 'idUsuario' => -1, 'eliminar_hosp' => $request->input('eliminar_hosp'), 'filtros' => $filtros ));
       
 //        dd($request); 
     }
@@ -504,7 +523,9 @@ class HospedajeController extends Controller
         $tipos = Funciones::getTiposHospedajesSelect(); 
         $tipos['-1'] = '-- Todas --'; 
 
-        return view('pages.Hospedaje.index', array('hospedajes' => $hospedajes,'provincias' => $provincias, 'ciudades' =>$ciudades , 'tiposHosp' => $tipos,'idUsuario' => -1, 'eliminar_hosp' => 1));
+        $filtros = $this->getClearFiltros(); 
+
+        return view('pages.Hospedaje.index', array('hospedajes' => $hospedajes,'provincias' => $provincias, 'ciudades' =>$ciudades , 'tiposHosp' => $tipos,'idUsuario' => -1, 'eliminar_hosp' => 1,'filtros' => $filtros));
     }
 
     public function actDesc($idHosp, $activar){
@@ -514,8 +535,30 @@ class HospedajeController extends Controller
             Session::flash('alert-success', 'Hospedaje activado correctamente!');           
         }
         else{
-            Session::flash('alert-danger', 'Hospedaje desactivando correctamente!');           
+            Session::flash('alert-warning', 'Hospedaje desactivando correctamente!');           
         }
         return redirect()->back(); 
+    }
+
+    private function getFiltros(Request $request){
+
+        $filtros = array(); 
+        $filtros['id_ciudad'] = $request->input('id_ciudad'); 
+        $filtros['id_provincia'] = $request->input('id_provincia'); 
+        $filtros['idTipoHosp'] = $request->input('idTipoHosp'); 
+        $filtros['titulo'] = $request->input('titulo'); 
+
+        return $filtros; 
+    }
+
+    private function getClearFiltros(){
+        $filtros = array(); 
+        
+        $filtros['id_ciudad'] = -1; 
+        $filtros['id_provincia'] = -1; 
+        $filtros['idTipoHosp'] = -1; 
+        $filtros['titulo'] = ''; 
+
+        return $filtros; 
     }
 }
