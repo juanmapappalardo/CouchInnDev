@@ -43,6 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('hospedaje/verReservas/{id}', 'ReservasController@verReservas'); 
 	Route::get('hospedajes/misHospedajes', 'HospedajeController@misHospedajes'); 
 	Route::get('/',['as' => 'home', 'uses' => 'PagesController@home']);
+	Route::get('donacion/getDonaciones', 'DonacionController@getDonaciones'); 
+	Route::get('donacion/filtrarDonacion', 'DonacionController@filtrarDonaciones'); 
 	//Routes resources
 	Route::resource('TiposDeHospedaje', 'TiposDeHospedajeController');
 	Route::resource('Usuario', 'UsuarioController'); 
