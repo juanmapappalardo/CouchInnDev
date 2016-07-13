@@ -127,6 +127,29 @@
 							</div>
 							<div id="collapse4" class="panel-collapse collapse">
 	  							<div class="panel-body">
+									<div class="panel panel-default">
+										<br />
+										<div class="panel-body">
+											<table class="table table-striped task-table">
+												<thead>
+													<th>Titulo</th>
+													<th>Fecha Inicio</th>
+													<th>Fecha Fin</th>
+													<th>Estado</th>
+												</thead>
+												<tbody>
+													@foreach($reservas as $reserva)
+														<tr>	
+													    	<td>{{$reserva->titulo}}</td>
+													    	<td>{{$reserva->fechaIni}}</td>
+													    	<td>{{$reserva->fechaFin}}</td>
+													    	<td>{{$reserva->desc_estado}}</td>
+													    </td>
+													@endforeach
+												</tbody>
+											</table>
+										</div>
+									</div>								
 	  							</div>
 	  						</div>
 						</div>												
@@ -140,6 +163,36 @@
 							</div>
 							<div id="collapse5" class="panel-collapse collapse">
 	  							<div class="panel-body">
+									<div class="panel panel-default">
+										<br />
+										<div class="panel-body">
+											<table class="table table-striped task-table">
+												<thead>
+													<th>Titulo</th>
+													<th>Fecha Inicio Reserv</th>
+													<th>Fecha Fin Reserv</th>
+													<th>Fecha Puntuación</th>													
+													<th>Puntaje</th>
+
+												</thead>
+												<tbody>
+													@foreach($puntajes['puntajes'] as $puntaje)
+														<tr>	
+													    	<td>{{$puntaje->titulo}}</td>
+													    	<td>{{$puntaje->fechaIni}}</td>
+													    	<td>{{$puntaje->fechaFin}}</td>
+													    	<td>{{$puntaje->fechaPuntuacion}}</td>
+													    	<td>{{$puntaje->puntaje}}</td>
+													    </td>
+													@endforeach
+												</tbody>
+											</table>
+										</div>
+										<div class="panel-footer">
+											<label>Total de Puntos : {{$puntajes['total']}}</label>
+										</div>
+
+									</div>									  							
 	  							</div>
 	  						</div>
 						</div>												

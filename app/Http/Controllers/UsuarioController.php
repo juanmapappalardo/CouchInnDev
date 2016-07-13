@@ -213,10 +213,10 @@ class UsuarioController extends Controller
         $comentarios = Comentario::getComentarioUsuario($id);         
         $resenias = Resenia::getReseniaUsuario($id); 
         $reservas = Reserva::getReservasUsuario($id); 
-        $puntaje = PuntajeUsuario::getPuntajeUsuario($id); 
+        $puntajes_total = PuntajeUsuario::getPuntajeUsuario($id); 
         $usuario = Usuario::getUsuario($id); 
 
 
-        return view('pages.Usuario.seguimiento', array('hospedajes' => $hospedajes, 'comentarios' => $comentarios, 'resenias' => $resenias, 'reservas' => $reservas, 'puntaje' => $puntaje, 'usuario' => $usuario[0])); 
+        return view('pages.Usuario.seguimiento', array('hospedajes' => $hospedajes, 'comentarios' => $comentarios, 'resenias' => $resenias, 'reservas' => $reservas, 'puntajes' => $puntajes_total, 'usuario' => $usuario[0])); 
     }
 }
