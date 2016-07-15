@@ -217,7 +217,7 @@
                         <div class="col-md-12">
                             <div class="pull-right">                    
                                 {!! Form::submit('Actualizar', ['class' => 'btn btn-primary btn-sm']) !!}
-                                <a href="{{ route('Hospedaje.index') }}" class="btn btn-success btn-sm">Volver</a>
+                                <a href="{{ url('hospedajes/misHospedajes') }}" class="btn btn-success btn-sm">Volver</a>
                                 {!! Form::close() !!}
                             </div>
                         </div>

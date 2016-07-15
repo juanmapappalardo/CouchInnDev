@@ -7,7 +7,7 @@
     		<div class="panel panel-default">
     			<div class="panel-heading">		    
 			    	@include('pages.partials.errors') 
-					@include('pages.partials.exito') 
+					@include('pages.partials.mensajes') 
 					@if(! empty($imagenes))
 			    		<div id="myCarousel" class="carousel slide" style="max-width: 900px; margin: 0 auto">
 					      <ol class="carousel-indicators">
@@ -212,10 +212,17 @@
 				                	<a href="{{ url('hospedajes/misHospedajes') }}" class="btn btn-success btn-sm"></i>Volver</a>			
 				                </div>
 				            @else
-		                 		<br>
-				                <div class="pull-right">
-				                	<a href="{{ route('Hospedaje.index') }}" class="btn btn-success btn-sm"></i>Volver</a>			
-				                </div>
+				            	@if(Auth::user()->id == 16)
+			                 		<br>
+					                <div class="pull-right">
+					                	<a href="{{ url('hospedaje/eliminarHospAdmin') }}" class="btn btn-success btn-sm"></i>Volver</a>			
+					                </div>					                
+				            	@else 
+			                 		<br>
+					                <div class="pull-right">
+					                	<a href="{{ route('Hospedaje.index') }}" class="btn btn-success btn-sm"></i>Volver</a>			
+					                </div>
+					            @endIf
 				            @endIf			           
 	                @endforeach
 				</div>

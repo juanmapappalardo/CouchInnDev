@@ -64,7 +64,7 @@ class Hospedaje extends Model
             ->leftjoin('provincia', 'Propiedad.idProvincia', '=', 'provincia.id')
             ->leftjoin('TiposDeHospedaje', 'Propiedad.idTipoHospedaje', '=', 'TiposDeHospedaje.id')        
             ->where('hospedaje.activo', '=', 1)
-            ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp', 'hospedaje.fechaInicio', 'hospedaje.fechaFin', 'hospedaje.activo', 'users.premium', 'hospedaje.idPropiedad')
+            ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp', 'hospedaje.fechaInicio', 'hospedaje.fechaFin', 'hospedaje.activo', 'users.premium', 'hospedaje.idPropiedad', 'users.id as idUsuario')
             ->get();
 
         foreach ($hospedajes as $hospedaje) {
@@ -81,7 +81,7 @@ class Hospedaje extends Model
             ->leftjoin('Propiedad', 'hospedaje.idPropiedad','=', 'Propiedad.idPropiedad')
             ->leftjoin('provincia', 'Propiedad.idProvincia', '=', 'provincia.id')
             ->leftjoin('TiposDeHospedaje', 'Propiedad.idTipoHospedaje', '=', 'TiposDeHospedaje.id')       
-            ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp', 'hospedaje.fechaInicio', 'hospedaje.fechaFin', 'hospedaje.activo')
+            ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp', 'hospedaje.fechaInicio', 'hospedaje.fechaFin', 'hospedaje.activo', 'hospedaje.idUsuarioPublic as idUsuario')
             ->get(); 
         foreach ($hospedajes as $hospedaje) {
             $hospedaje->fechaInicio = Carbon::createFromFormat('Y-m-d', $hospedaje->fechaInicio)->format('d/m/Y'); 

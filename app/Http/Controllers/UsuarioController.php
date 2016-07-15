@@ -185,6 +185,10 @@ class UsuarioController extends Controller
         $fFinBus = Carbon::createFromFormat('d/m/Y H:i:s',\Carbon\Carbon::now()->format('d/m/Y').' 23:59:59')->format('Y-m-d H:i:s'); 
        
         $usuarios = Usuario::getUsuarios($fIniBus, $fFinBus); 
+        foreach ($usuarios as $usuario) {
+            $usuario->created_at = Carbon::createFromFormat('Y-m-d H:i:s',$usuario->created_at)->format('d/m/Y'); 
+        }
+        
 
         //formatear fecha de registro
 
@@ -198,6 +202,9 @@ class UsuarioController extends Controller
            
             $usuarios = Usuario::getUsuarios($fIniBus, $fFinBus); 
             //formatear fecha de registro
+            foreach ($usuarios as $usuario) {
+            $usuario->created_at = Carbon::createFromFormat('Y-m-d H:i:s',$usuario->created_at)->format('d/m/Y'); 
+        }
 
             return view('pages.Usuario.indexAdmin', array('usuarios' => $usuarios, 'fechaIniFiltro' => $request->input('fechaInicio') ,'fechaFinFiltro' => $request->input('fechaFin')));                 
         }
@@ -216,7 +223,18 @@ class UsuarioController extends Controller
         $puntajes_total = PuntajeUsuario::getPuntajeUsuario($id); 
         $usuario = Usuario::getUsuario($id); 
 
+        foreach ($reservas as $reserva) {
+            $reserva->fechaIni = Carbon::createFromFormat('Y-m-d',$reserva->fechaIni)->format('d/m/Y'); 
+            $reserva->fechaFin = Carbon::createFromFormat('Y-m-d',$reserva->fechaFin)->format('d/m/Y');             
+        }
 
         return view('pages.Usuario.seguimiento', array('hospedajes' => $hospedajes, 'comentarios' => $comentarios, 'resenias' => $resenias, 'reservas' => $reservas, 'puntajes' => $puntajes_total, 'usuario' => $usuario[0])); 
+    }
+
+    public function verPerfilUsuario($idUsuario){
+        $puntaje = PuntajeUsuario::getPuntajeUsuario($idUsuario); 
+        $usuario = Usuario::getUsuario($idUsuario);       
+        $usuario[0]->fechaNacimiento = Carbon::createFromFormat('Y-m-d', $usuario[0]->fechaNacimiento)->format('d/m/Y'); 
+        return view('pages.Usuario.perfilUsuario', array('usuario' => $usuario[0], 'puntos' => $puntaje['total']));  
     }
 }

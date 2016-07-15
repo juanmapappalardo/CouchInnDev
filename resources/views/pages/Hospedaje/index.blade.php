@@ -59,24 +59,47 @@
 				<thead>
 					
 					<th>Titulo</th>
-					<th>Usuario</th>
+					@if($idUsuario != Auth::user()->id)
+						<th>Usuario</th>
+					@endIf
 					<th>Tipo</th>
 					<th>Capacidad</th>
 					<th>Provincia</th>
 					<th>Fecha Inicio</th>
 					<th>Fecha Fin</th>
+					@if($idUsuario == Auth::user()->id)
+						<th>Activo</th>
+					@endIf
 				</thead>
 				<tbody>
 					@foreach($hospedajes as $hospedaje)			 
-						<tr>	
-					    	
+						<tr>					    	
 					    	<td class="table-text"><div>{{ $hospedaje->titulo }}</div></td>
-					    	<td class="table-text"><div>{{ $hospedaje->name }}</div></td>
+					    	@if($idUsuario != Auth::user()->id)
+						    	<td class="table-text">
+						    		<div>
+								 		{!! Form::open([
+				            				'method' => 'GET',
+				            				'url' => ['usuario/verPerfilUsuario', $hospedaje->idUsuario],			            				  				
+				            				'id' => $hospedaje->idUsuario
+				        				]) !!}					        					                            
+						    			 <a href="#" onclick="document.getElementById('{{$hospedaje->idUsuario}}').submit()">{{ $hospedaje->name }}</a> 
+						    			 {!! Form::close() !!}
+						    		</div>
+						    	</td>
+						    @endIf
 					    	<td class="table-text"><div>{{ $hospedaje->descTipoHosp }}</div></td>
 					    	<td class="table-text"><div>{{ $hospedaje->capacidad }}</div></td>
 					    	<td class="table-text"><div>{{ $hospedaje->provincia_nombre }}</div></td>
 					    	<td class="table-text"><div>{{ $hospedaje->fechaInicio}}</div></td>
 					    	<td class="table-text"><div>{{ $hospedaje->fechaFin}}</div></td>					    	
+					    	@if($idUsuario == Auth::user()->id)
+								@if($hospedaje->activo)
+									<td class="table-text"><div><span class="glyphicon glyphicon-ok"></span></div></td>
+								@else
+									<td class="table-text"><div><span class="glyphicon glyphicon-remove"></span></div></td>
+								@endIf
+							@endIf
 					    	<td>
 					    		@if(($idUsuario == -1) && ($eliminar_hosp == 0))
 					    			@if($hospedaje->premium == 1)
@@ -122,8 +145,9 @@
 		                            <button type="submit" class="btn btn-success btn-xs">Detalle</button>								                            
 		                            {!! Form::close() !!}                                              											                            
 		                        </div>
+
 		                        @if($eliminar_hosp == 0)
-									@if($idUsuario == Auth::user()->id)				                  
+									@if(($idUsuario == Auth::user()->id) && ($hospedaje->activo))		                  
 				                        <div class= "pull-right">
 						    				{!! Form::open([
 				                                'method' => 'GET',
@@ -149,16 +173,18 @@
 				                            ]) !!}
 					        				<button type="submit" class="btn btn-primary btn-xs">Ver Reservas</button>
 				                            {!! Form::close() !!}					    			
-				                        </div>
-				                    @else
-				                    	<div class= "pull-right">
-					                    	{!! Form::open([
-				                                'method' => 'GET',
-				                                'url' => ['reservas/crearId', $hospedaje->id], 		                               	
-				                            ]) !!}
-					                    	<button type="submit" class="btn btn-primary btn-xs">Reservar</button>
-					                    	{!! Form::close() !!}
-					                    </div>
+				                        </div>				                    	
+									@else
+										@if($idUsuario != Auth::user()->id)
+					                    	<div class= "pull-right">
+						                    	{!! Form::open([
+					                                'method' => 'GET',
+					                                'url' => ['reservas/crearId', $hospedaje->id], 		                               	
+					                            ]) !!}
+						                    	<button type="submit" class="btn btn-primary btn-xs">Reservar</button>
+						                    	{!! Form::close() !!}
+						                    </div>													                        
+						                @endIf
 				                    @endif			        			
 				                @else 
 				                	<div class= "pull-right">					    			

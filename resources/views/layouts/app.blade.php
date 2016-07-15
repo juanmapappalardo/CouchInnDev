@@ -273,10 +273,6 @@
                                         <li>
                                             <a href="{{ url('donacion/getDonaciones') }}">Estadisticas económicas</a>
                                         </li>
-
-                                        <li>
-                                            <a href="{{ url('usuarios/getUsuarios') }}">Usuarios</a>
-                                        </li>
                                     </ul>
                                 </li>                        
                                 

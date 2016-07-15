@@ -415,7 +415,7 @@ class HospedajeController extends Controller
             $hospedajes=$hospedajes->orWhere('hospedaje.titulo', 'Like', '%'.$request->input('titulo').'%'); 
         }
         $hospedajes = $hospedajes
-                    ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp', 'hospedaje.fechaInicio', 'hospedaje.fechaFin', 'users.premium', 'hospedaje.activo')
+                    ->select('titulo','hospedaje.id', 'capacidad', 'provincia.provincia_nombre', 'name','TiposDeHospedaje.descripcion as descTipoHosp', 'hospedaje.fechaInicio', 'hospedaje.fechaFin', 'users.premium', 'hospedaje.activo', 'hospedaje.idUsuarioPublic as idUsuario')
                     ->get();
 
         foreach ($hospedajes as $hosp) {

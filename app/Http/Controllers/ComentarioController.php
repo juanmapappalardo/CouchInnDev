@@ -32,13 +32,13 @@ class ComentarioController extends Controller
 
 		        Comentario::create($inputComent); 
 
-		        Session::flash('alert-success', 'Comentario almacenado correctamente!'); 
+		        Session::flash('alert-success', 'Tu comentario se guardó correctamente!'); 
             	//return redirect('hospedajes/misHospedajes');
             	return redirect()->back();
 
     		}
     	catch(Exception $e){
-    		Session::flash('alert-danger', 'Algo salió mal el comentario no se pudo guardar!. Error:'.$e);
+    		Session::flash('alert-danger', 'Algo salió mal, tu comentario no se pudo guardar!. Error:'.$e);
             return redirect()->back();
 
     	}
@@ -65,7 +65,7 @@ class ComentarioController extends Controller
 
 		Comentario::updateIdResp($dataComent); 
 		
-		Session::flash('alert-success', 'Respuesta guardada con éxito!');     	
+		Session::flash('alert-success', 'Tu respuesta se guardó correctamente!');     	
     	return redirect()->back();
 	}	
 }

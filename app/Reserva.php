@@ -42,4 +42,14 @@ class Reserva extends Model
                         ->get(); 
         return $reserv; 
     }
+
+    static function buscarReserva($id){
+        $reservas = DB::table('reservas')->where('id_reserva', '=', $id)->get(); 
+
+        return $reservas; 
+    }
+
+    static function updateReserva($id, $fechaIni, $fechaFin){
+        DB::table('reservas')->where('reservas.id_reserva', '=', $id)->update(['fechaIni' => $fechaIni, 'fechaFin' => $fechaFin]); 
+    }
 }

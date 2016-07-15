@@ -139,7 +139,7 @@
                         <div class="col-md-12">
                             <div class="pull-right">                    
                                 {!! Form::submit('Alta', ['class' => 'btn btn-primary btn-sm']) !!}
-                                <a href="{{ route('TiposDeHospedaje.index') }}" class="btn btn-success btn-sm">Volver</a>
+                                <a href="{{ url('/') }}" class="btn btn-success btn-sm">Cancelar</a>
                                 {!! Form::close() !!}
                             </div>
                         </div>

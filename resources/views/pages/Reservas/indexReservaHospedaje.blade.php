@@ -57,7 +57,9 @@
 					            @else     					            	
 						            @if($reserva->concretada)		
 					                	@if(!$reserva->puntuada) 
-				                			<button type="button" data-toggle="modal" data-target="#createModal{{$reserva->id_reserva}}" class="btn btn-success btn-xs">Puntuar Usuario</button>					    		
+						            		<div class= "pull-right">					    							            							                		
+					                			<button type="button" data-toggle="modal" data-target="#createModal{{$reserva->id_reserva}}" class="btn btn-success btn-xs">Puntuar Usuario</button>					    		
+					                		</div>
 											<!-- Modal -->
 											<div id="createModal{{$reserva->id_reserva}}" class="modal fade" role="dialog">
 											  <div class="modal-dialog">
@@ -67,6 +69,7 @@
 												        <div class="modal-header">
 		                                              		<button type="button" class="close" data-dismiss="modal">&times;</button>
 		                                                     	<h4 class="modal-title">Puntuar Usuario</h4>
+
 		                                                </div>
 		                                                <div class="modal-body">
 		                                            		{!! Form::open(['url' => 'puntaje/puntuarUsuario', 'method' => 'POST']) !!}

@@ -10,16 +10,8 @@
 		</div>
 
 		<div class="panel-body">		
-			@include('pages.partials.errors') 
-			@include('pages.partials.mensajes') 
-
-<!--		
-			<table class="table table-striped task-table">
-				
-				<thead>
-				</thead>
-				<tbody>
--->				
+					@include('pages.partials.errors') 
+					@include('pages.partials.mensajes') 			
 					<div class="panel-group" id="accordion">
 						<div class="panel panel-default">
 							<div class="panel-heading">
@@ -50,7 +42,7 @@
 													    	<td>{{$hospedaje->descripcion}}</td>
 													    	<td>{{$hospedaje->fechaInicio}}</td>
 													    	<td>{{$hospedaje->fechaFin}}</td>
-													    </td>
+													    </tr>
 													@endforeach
 												</tbody>
 											</table>
@@ -144,7 +136,7 @@
 													    	<td>{{$reserva->fechaIni}}</td>
 													    	<td>{{$reserva->fechaFin}}</td>
 													    	<td>{{$reserva->desc_estado}}</td>
-													    </td>
+													    </tr>
 													@endforeach
 												</tbody>
 											</table>
@@ -183,7 +175,7 @@
 													    	<td>{{$puntaje->fechaFin}}</td>
 													    	<td>{{$puntaje->fechaPuntuacion}}</td>
 													    	<td>{{$puntaje->puntaje}}</td>
-													    </td>
+													    </tr>
 													@endforeach
 												</tbody>
 											</table>
@@ -196,13 +188,12 @@
 	  							</div>
 	  						</div>
 						</div>												
-						<!--/Puntajes-->
 					</div>
-<!--
-				</tbody>
-			</table>
--->		
+					<div class="pull-left"> 
+						<a href="{{ url('usuarios/getUsuarios') }}" class="btn btn-success btn-sm">Volver</a>			    		
+					</div>
+				</div>
 		</div>
-	</div>
 </div>
+
 @stop

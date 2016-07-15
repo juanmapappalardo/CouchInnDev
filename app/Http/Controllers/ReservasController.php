@@ -96,7 +96,12 @@ class ReservasController extends Controller
      */
     public function edit($id)
     {
-        //
+        $res = Reserva::buscarReserva($id);
+        $reserva = $res[0]; 
+
+        $reserva->fechaIni = Carbon::createFromFormat('Y-m-d', $reserva->fechaIni)->format('d/m/Y'); 
+        $reserva->fechaFin = Carbon::createFromFormat('Y-m-d', $reserva->fechaFin)->format('d/m/Y'); 
+        return view('pages.Reservas.edit', array('reserva' => $reserva));
     }
 
     /**
@@ -108,7 +113,25 @@ class ReservasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+        if($this->validarReserva($request)){
+            /*
+            $input = $request->all(); 
+            $input['id_estado'] = 2; 
+            $input['fechaIni'] = Carbon::createFromFormat('d/m/Y', $request->input('fechaIni'))->format('Y-m-d'); 
+            $input['fechaFin']=  Carbon::createFromFormat('d/m/Y', $request->input('fechaFin'))->format('Y-m-d'); 
+            $input['id_usuario'] = Auth::user()->id; 
+            */
+            $fechaIni = Carbon::createFromFormat('d/m/Y', $request->input('fechaIni'))->format('Y-m-d'); 
+            $fechaFin = Carbon::createFromFormat('d/m/Y', $request->input('fechaFin'))->format('Y-m-d'); 
+            Reserva::updateReserva($id, $fechaIni, $fechaFin); 
+            Session::flash('alert-success', 'Reserva registrada con éxito!');
+            return redirect()->back();  
+        }
+        else{
+            return redirect()->back(); 
+        }
+
     }
 
     /**
@@ -140,10 +163,7 @@ class ReservasController extends Controller
         $fechasHosp = DB::table('hospedaje')->where('hospedaje.id', $request->input('id_hospedaje'))->get(); 
         $fechIniHosp=Carbon::createFromFormat('Y-m-d', $fechasHosp[0]->fechaInicio);//->format('Y-m-d');
         $fechFinHosp=Carbon::createFromFormat('Y-m-d', $fechasHosp[0]->fechaFin);//->format('Y-m-d'); 
-        /*
-        Session::flash('alert-danger', 'Fechas: '.$fechaIni.'___'.$fechaFin.'___'.$fechIniHosp.'___'.$fechFinHosp);
-        return redirect()->back(); 
-        */
+       
         
 
         if($fechaIni->lt($fechaFin)){

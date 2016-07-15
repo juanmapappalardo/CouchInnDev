@@ -1,0 +1,8 @@
+pivotal
+verificar formularios vacios
+informar que couch se edito
+informar couch desactivados 
+verificar fechas 
+cargar base de datos correctamente 
+menu Usuario Repetido 
+boton volver 

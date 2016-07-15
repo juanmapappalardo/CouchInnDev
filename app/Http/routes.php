@@ -45,6 +45,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/',['as' => 'home', 'uses' => 'PagesController@home']);
 	Route::get('donacion/getDonaciones', 'DonacionController@getDonaciones'); 
 	Route::get('donacion/filtrarDonacion', 'DonacionController@filtrarDonaciones'); 
+	Route::get('usuario/verPerfilUsuario/{idUsuario}', 'UsuarioController@verPerfilUsuario'); 
+
 	//Routes resources
 	Route::resource('TiposDeHospedaje', 'TiposDeHospedajeController');
 	Route::resource('Usuario', 'UsuarioController'); 
